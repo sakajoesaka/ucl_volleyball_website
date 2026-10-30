@@ -33,7 +33,7 @@ export default function FaqsPage() {
         title="Frequently Asked Questions"
         intro="Everything you need to know about joining and playing with UCL Volleyball."
       />
-      <Container className="pb-16 md:pb-24">
+      <Container className="py-16 md:py-24">
         <div>
           <FaqList faqs={faqs} />
         </div>

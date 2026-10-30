@@ -4,7 +4,7 @@ import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/metadata";
 import { Photo } from "@/components/Photo";
 import { TeamCards } from "@/components/TeamCards";
-import { Container, Heading, PageHeader } from "@/components/ui";
+import { Container, Heading } from "@/components/ui";
 
 export const metadata = pageMetadata({
   title: "Our Legacy",
@@ -16,12 +16,7 @@ export const metadata = pageMetadata({
 export default function LegacyPage() {
   return (
     <>
-      <PageHeader
-        title="Our Legacy"
-        intro={`Volleyball at UCL since ${site.foundedYear}: a club that wins trophies and makes friends for life.`}
-      />
-
-      {/* Our story, over a full-width photo */}
+      {/* The page title and our story, over a full-width photo */}
       <section className="relative isolate overflow-hidden bg-brand-950">
         <Photo
           image={images.teamHuddle}
@@ -34,10 +29,12 @@ export default function LegacyPage() {
           aria-hidden="true"
           className="absolute inset-0 -z-10 bg-gradient-to-t from-brand-950 via-brand-950/75 to-brand-950/10 md:bg-gradient-to-r md:from-brand-950/95 md:via-brand-950/70 md:to-brand-950/5"
         />
-        <Container className="flex min-h-[36rem] items-end py-14 md:min-h-[40rem] md:items-center md:py-24">
-          <div className="max-w-xl text-white">
-            <Heading>Our Story</Heading>
-            <div className="mt-5 space-y-4 text-lg text-white/85">
+        <Container className="flex min-h-svh items-end pt-28 pb-14 md:min-h-[min(100svh,56rem)] md:pb-24">
+          <div className="max-w-2xl text-white">
+            <Heading as="h1" size="xl">
+              Our Legacy
+            </Heading>
+            <div className="mt-6 max-w-xl space-y-4 text-lg text-white/85">
               <p>
                 UCL Volleyball was founded in{" "}
                 <strong className="font-semibold text-white">{site.foundedYear}</strong> by a small group of

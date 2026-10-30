@@ -1,11 +1,12 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
-import { CalendarDays, Clock, MapPin } from "lucide-react";
+import { CalendarDays, MapPin } from "lucide-react";
 import type { ClubEvent } from "@/content/events";
 import { site } from "@/content/site";
 import { formatEventDate, getUpcomingEvents } from "@/lib/events";
 import { pageMetadata } from "@/lib/metadata";
 import { BrandIcon } from "@/components/BrandIcon";
+import { Photo } from "@/components/Photo";
 import { ButtonLink, Container, Heading, PageHeader } from "@/components/ui";
 
 export const metadata = pageMetadata({
@@ -18,22 +19,10 @@ export default function EventsPage() {
   return (
     <>
       <PageHeader title="Upcoming Events" intro="Tournaments, socials and trips. Here's what's coming up." />
-      <Container className="pb-16 md:pb-24">
+      <Container className="py-12 md:py-20">
         <Suspense fallback={<EventsSkeleton />}>
           <EventList />
         </Suspense>
-        <p className="mt-12 text-muted">
-          New events are announced in our WhatsApp group first.{" "}
-          <a
-            href={site.whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-semibold text-brand underline decoration-lilac decoration-2 underline-offset-4"
-          >
-            Join the group<span className="sr-only"> (opens in a new tab)</span>
-          </a>{" "}
-          so you never miss one.
-        </p>
       </Container>
     </>
   );
@@ -62,138 +51,106 @@ async function EventList() {
     );
   }
 
+  // The soonest featured event goes first, as the large "Next Big Event" card.
   const featured = upcoming.find((event) => event.featured);
-  const rest = upcoming.filter((event) => event !== featured);
+  const ordered = featured ? [featured, ...upcoming.filter((event) => event !== featured)] : upcoming;
 
   return (
-    <div className="space-y-12">
-      {featured && <FeaturedEvent event={featured} />}
-      {rest.length > 0 && (
-        <section>
-          <Heading size="md" className="text-brand">
-            {featured ? "Also Coming Up" : "Coming Up"}
-          </Heading>
-          <ul className="mt-6 space-y-4">
-            {rest.map((event) => (
-              <li key={`${event.date}-${event.title}`}>
-                <EventCard event={event} />
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-    </div>
+    <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {ordered.map((event, i) => {
+        const isFeatured = event === featured;
+        return (
+          <li key={`${event.date}-${event.title}`} className={isFeatured ? "sm:col-span-2" : ""}>
+            <EventCard event={event} featured={isFeatured} palette={i} />
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
-function FeaturedEvent({ event }: { event: ClubEvent }) {
+// Poster-style card: picture on top, bold title, then the date and time along the bottom.
+function EventCard({ event, featured, palette }: { event: ClubEvent; featured: boolean; palette: number }) {
   const date = formatEventDate(event.date);
   return (
-    <section
-      aria-labelledby="next-big-event"
-      className="relative isolate overflow-hidden rounded-[var(--radius-card)] bg-gradient-to-br from-brand to-brand-900 p-7 text-white md:p-10"
-    >
-      {/* eslint-disable-next-line @next/next/no-img-element -- decorative static SVG */}
-      <img
-        src="/volleyball.svg"
-        alt=""
-        aria-hidden="true"
-        className="absolute -right-24 -bottom-28 -z-10 size-64 opacity-15 md:size-80"
-      />
-      <p
-        id="next-big-event"
-        className="inline-flex rounded-full bg-lilac px-3.5 py-1 text-sm font-semibold text-brand-950"
-      >
-        Next Big Event
-      </p>
-      <div className="mt-6 flex flex-col gap-6 md:flex-row md:items-center md:gap-10">
-        <DateBlock date={date} tone="light" />
-        <div>
-          <Heading as="h2" className="flex flex-wrap items-center gap-3">
-            {event.title}
-            {event.example && <ExampleTag tone="light" />}
-          </Heading>
-          <EventMeta event={event} date={date.full} tone="light" />
-          <p className="mt-4 max-w-2xl text-lg text-white/85">{event.description}</p>
-        </div>
+    <article className="flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-line bg-white">
+      <div className="relative">
+        {event.image ? (
+          <Photo
+            image={event.image}
+            sizes={featured ? "(min-width: 1024px) 760px, 100vw" : "(min-width: 1024px) 370px, 100vw"}
+            className={featured ? "aspect-[16/9]" : "aspect-[4/3]"}
+          />
+        ) : (
+          <EventPoster date={date} palette={palette} featured={featured} />
+        )}
+        {featured && (
+          <p className="absolute top-4 left-4 rounded-full bg-brand-950 px-3.5 py-1.5 text-sm font-semibold text-white">
+            Next Big Event
+          </p>
+        )}
       </div>
-    </section>
-  );
-}
-
-function EventCard({ event }: { event: ClubEvent }) {
-  const date = formatEventDate(event.date);
-  return (
-    <article className="flex gap-5 rounded-[var(--radius-card)] border border-line bg-white p-5 md:gap-8 md:p-7">
-      <DateBlock date={date} />
-      <div className="min-w-0">
-        <Heading as="h3" size="md" className="flex flex-wrap items-center gap-2.5 text-ink">
+      <div className="flex flex-1 flex-col p-6 md:p-7">
+        <Heading
+          as="h2"
+          size={featured ? "lg" : "md"}
+          className="flex flex-wrap items-center gap-2.5 text-ink"
+        >
           {event.title}
           {event.example && <ExampleTag />}
         </Heading>
-        <EventMeta event={event} date={date.full} />
-        <p className="mt-3 text-muted">{event.description}</p>
+        <p className={`mt-3 text-muted ${featured ? "md:text-lg" : ""}`}>{event.description}</p>
+        <p className="mt-4 flex items-start gap-2 text-ink/85">
+          <MapPin className="mt-1 size-4 shrink-0 text-lilac" aria-hidden="true" />
+          {event.location}
+        </p>
+        <div className="mt-auto flex items-center justify-between gap-4 border-t border-line pt-4 font-semibold text-ink">
+          <time dateTime={event.date}>
+            {date.weekday} {date.day} {date.month} {date.year}
+          </time>
+          <span className="text-right">{event.time}</span>
+        </div>
       </div>
     </article>
   );
 }
 
-function DateBlock({
+// Shown when an event has no image: overlapping circles with the date, in rotating club colours.
+const posterPalettes = [
+  { bg: "bg-brand", circle: "bg-blush", text: "text-white" },
+  { bg: "bg-band", circle: "bg-brand", text: "text-brand-950" },
+  { bg: "bg-blush", circle: "bg-lilac", text: "text-brand-950" },
+];
+
+function EventPoster({
   date,
-  tone = "dark",
+  palette,
+  featured,
 }: {
   date: ReturnType<typeof formatEventDate>;
-  tone?: "dark" | "light";
+  palette: number;
+  featured: boolean;
 }) {
+  const colours = posterPalettes[palette % posterPalettes.length];
   return (
     <div
       aria-hidden="true"
-      className={`flex w-20 shrink-0 flex-col items-center self-start rounded-2xl py-3 md:w-24 ${
-        tone === "light" ? "bg-white text-brand" : "bg-lilac-100 text-brand"
-      }`}
+      className={`relative isolate overflow-hidden ${colours.bg} ${featured ? "aspect-[16/9]" : "aspect-[4/3]"}`}
     >
-      <span className="text-xs font-semibold">{date.weekday}</span>
-      <span className="heading text-4xl md:text-5xl">{date.day}</span>
-      <span className="text-sm font-semibold">{date.month}</span>
+      <div
+        className={`absolute top-[-35%] right-[-42%] -z-10 aspect-square h-[150%] rounded-full ${colours.circle}`}
+      />
+      <div className={`absolute bottom-5 left-6 ${colours.text}`}>
+        <p className="heading text-7xl md:text-8xl">{date.day}</p>
+        <p className="heading text-2xl md:text-3xl">{date.month}</p>
+      </div>
     </div>
   );
 }
 
-function EventMeta({
-  event,
-  date,
-  tone = "dark",
-}: {
-  event: ClubEvent;
-  date: string;
-  tone?: "dark" | "light";
-}) {
-  const iconClass = `size-4 shrink-0 ${tone === "light" ? "text-lilac-300" : "text-lilac"}`;
+function ExampleTag() {
   return (
-    <ul className={`mt-3 space-y-1.5 ${tone === "light" ? "text-white/90" : "text-ink/85"}`}>
-      <li className="flex items-center gap-2">
-        <CalendarDays className={iconClass} aria-hidden="true" />
-        <span className="font-semibold">{date}</span>
-      </li>
-      <li className="flex items-center gap-2">
-        <Clock className={iconClass} aria-hidden="true" />
-        {event.time}
-      </li>
-      <li className="flex items-center gap-2">
-        <MapPin className={iconClass} aria-hidden="true" />
-        {event.location}
-      </li>
-    </ul>
-  );
-}
-
-function ExampleTag({ tone = "dark" }: { tone?: "dark" | "light" }) {
-  return (
-    <span
-      className={`rounded-full border border-dashed px-2.5 py-0.5 font-sans text-xs font-semibold tracking-normal ${
-        tone === "light" ? "border-white/60 text-white/80" : "border-muted/50 text-muted"
-      }`}
-    >
+    <span className="rounded-full border border-dashed border-muted/50 px-2.5 py-0.5 font-sans text-xs font-semibold tracking-normal text-muted">
       Example
     </span>
   );
@@ -201,10 +158,9 @@ function ExampleTag({ tone = "dark" }: { tone?: "dark" | "light" }) {
 
 function EventsSkeleton() {
   return (
-    <div aria-hidden="true" className="space-y-4">
-      <div className="h-64 animate-pulse rounded-[var(--radius-card)] bg-lilac-100" />
-      <div className="h-36 animate-pulse rounded-[var(--radius-card)] bg-white" />
-      <div className="h-36 animate-pulse rounded-[var(--radius-card)] bg-white" />
+    <div aria-hidden="true" className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="h-[30rem] animate-pulse rounded-[var(--radius-card)] bg-lilac-100 sm:col-span-2" />
+      <div className="h-[30rem] animate-pulse rounded-[var(--radius-card)] bg-white" />
     </div>
   );
 }

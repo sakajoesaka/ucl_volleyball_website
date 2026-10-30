@@ -25,7 +25,7 @@ export default function OfferPage() {
       />
 
       {/* Memberships slideshow */}
-      <section className="pb-16 md:pb-24">
+      <section className="py-16 md:py-24">
         <Container>
           <Heading className="text-brand">Memberships</Heading>
           <Carousel

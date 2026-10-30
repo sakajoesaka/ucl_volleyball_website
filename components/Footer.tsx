@@ -19,10 +19,6 @@ export function Footer() {
             />
             <p className="heading text-2xl">{site.fullName}</p>
           </div>
-          <p className="mt-5 max-w-sm text-white/75">
-            Volleyball at University College London since {site.foundedYear}. Competitive, social and open to
-            everyone.
-          </p>
         </div>
 
         <nav aria-label="Footer">

@@ -39,6 +39,7 @@ Open `content/events.ts` and copy an existing block, from `{` to `},`. Paste it 
 
 - Events disappear by themselves the day after their date, so you don't need to delete old ones.
 - If several events have `featured: true`, the soonest one goes in the "Next Big Event" box.
+- To show a poster or photo on an event's card, save it in `public/images/` and add `image: { src: "/images/your-poster.jpg", alt: "Describe the poster", label: "" },`. Without one, the card shows a purple date graphic.
 - If there are no upcoming events, the page says "No upcoming events right now — check the WhatsApp group".
 - **Delete the three example events** (marked `example: true`) before the site goes live.
 
@@ -90,7 +91,7 @@ npm run build    # production build (run before pushing big changes)
 ```
 
 - Next.js 16 (App Router), TypeScript, Tailwind CSS 4, Framer Motion.
-- **Page transition:** `components/transition/`. Internal links use `TransitionLink`, which hands the click to `TransitionProvider`. That plays `SpikeOverlay` (a player runs in and spikes the ball over a net; purple spreads out from where it lands), navigates while the screen is covered, then reveals the new page. About 1.3s in total. Change `SPEED` at the top of `SpikeOverlay.tsx` to make it faster or slower. It's a simple fade for users with "reduce motion" switched on, and it never plays on the first page load.
+- **Page transition:** `components/transition/`. Internal links use `TransitionLink`, which hands the click to `TransitionProvider`. That plays `BallOverlay`: a spinning volleyball appears where you clicked and grows into a purple circle (a CSS clip-path) that covers the screen; the page switches underneath; then the circle shrinks back into a ball that hops and drops out of view. About 0.6s in total (timings at the top of `BallOverlay.tsx`). Keyboard navigation starts it from the centre of the screen. It's a simple fade for users with "reduce motion" switched on, and it never plays on the first page load.
 - **Volleyball cursor:** `components/VolleyballCursor.tsx`. Only on devices with a mouse.
 - **Events** are filtered on each visit (not at build time), so past events drop off without a redeploy.
 - **Placeholders:** `components/Photo.tsx` checks at build time whether each photo exists in `public/images`.

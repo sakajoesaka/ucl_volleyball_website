@@ -16,14 +16,14 @@ const stats = [
   { label: "Founded", value: String(site.foundedYear) },
   { label: "Teams", value: "5" },
   { label: "Members", value: site.memberCount },
-  { label: "Membership", prefix: "Starting from", value: `${site.membershipPrice}/year` },
+  { label: "Membership starting from", value: `${site.membershipPrice}/year`, wide: true },
 ];
 
 export default function HomePage() {
   return (
     <>
       {/* Hero: fills the first screen on phones, so both buttons show without scrolling. */}
-      <section className="relative isolate flex min-h-[calc(100svh-var(--header-h))] items-end overflow-hidden bg-brand-900 md:min-h-[min(calc(100svh-var(--header-h)),52rem)]">
+      <section className="relative isolate flex min-h-svh items-end overflow-hidden bg-brand-900 md:min-h-[min(100svh,56rem)]">
         <Photo
           image={images.hero}
           sizes="100vw"
@@ -35,8 +35,9 @@ export default function HomePage() {
           aria-hidden="true"
           className="absolute inset-0 -z-10 bg-gradient-to-t from-brand-950 via-brand-950/50 to-brand-950/5 md:bg-gradient-to-r md:from-brand-950/90 md:via-brand-950/40 md:to-transparent"
         />
-        <Container className="pt-24 pb-10 md:pb-20">
-          <h1 className="heading text-[clamp(2.25rem,10.4vw,6.5rem)] whitespace-nowrap text-white">
+        <Container className="pt-28 pb-10 md:pb-20">
+          <p className="text-lg font-semibold text-lilac-200 md:text-xl">We are</p>
+          <h1 className="heading mt-1 text-[clamp(2.25rem,11vw,7.5rem)] whitespace-nowrap text-white">
             UCL Volleyball
           </h1>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
@@ -62,19 +63,14 @@ export default function HomePage() {
             UCL Volleyball is a welcoming, competitive and social club. Whether you&apos;re aiming for gold or
             just looking for great friends, you&apos;ll find your place here.
           </p>
-          <dl className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
+          <dl className="mt-10 grid grid-cols-3 gap-3 md:grid-cols-4 md:gap-4">
             {stats.map((stat) => (
               <div
                 key={stat.label}
-                className="flex flex-col rounded-2xl border border-line bg-white p-5 md:p-6"
+                className={`flex flex-col rounded-2xl border border-line bg-white p-4 md:p-6 ${stat.wide ? "col-span-3 md:col-span-1" : ""}`}
               >
-                <dt className="text-sm text-muted">{stat.label}</dt>
-                <dd className="mt-auto pt-1">
-                  {stat.prefix && (
-                    <span className="block text-sm font-medium text-ink/70">{stat.prefix}</span>
-                  )}
-                  <span className="heading text-3xl text-brand md:text-4xl">{stat.value}</span>
-                </dd>
+                <dt className="text-sm whitespace-nowrap text-muted">{stat.label}</dt>
+                <dd className="heading mt-auto pt-1 text-3xl text-brand md:text-4xl">{stat.value}</dd>
               </div>
             ))}
           </dl>
@@ -89,6 +85,7 @@ export default function HomePage() {
         <Carousel
           label="Life at the club photos"
           autoPlayMs={6000}
+          bars="overlay"
           className="mt-10"
           controlsClassName="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8"
           slides={lifeAtTheClub.map((image) => (

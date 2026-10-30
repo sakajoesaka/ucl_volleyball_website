@@ -4,9 +4,13 @@
 // - date:     the day of the event as "YYYY-MM-DD", e.g. "2027-03-14"
 // - time:     any text, e.g. "8pm", "10am–5pm", "8pm until late"
 // - featured: true puts it in the "Next Big Event" box (the soonest featured one is shown)
+// - image:    optional poster or photo, e.g. image: { src: "/images/boat-ball-poster.jpg", alt: "...", label: "" }
+//             (save the file in public/images). Without one, a purple date graphic is shown.
 //
 // Events disappear from the site automatically the day after their date,
 // so there's no need to delete old ones (but you can).
+
+import type { SiteImage } from "./images";
 
 export type ClubEvent = {
   date: string;
@@ -15,6 +19,7 @@ export type ClubEvent = {
   location: string;
   description: string;
   featured?: boolean;
+  image?: SiteImage;
   // Shows an "Example" tag on the site. Remove the line for real events.
   example?: boolean;
 };

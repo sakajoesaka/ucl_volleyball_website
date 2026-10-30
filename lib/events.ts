@@ -29,6 +29,7 @@ export function formatEventDate(isoDate: string) {
     weekday: part({ weekday: "short" }),
     day: part({ day: "numeric" }),
     month: part({ month: "short" }),
+    year: part({ year: "numeric" }),
     full: part({ weekday: "long", day: "numeric", month: "long", year: "numeric" }),
   };
 }

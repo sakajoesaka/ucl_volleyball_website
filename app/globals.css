@@ -17,6 +17,9 @@
   --color-muted: #5b5170;
   --color-line: #e6dfee;
   --color-placeholder: #d9d6de;
+  /* Background bands and the decorative circles on them. */
+  --color-band: #d9bdf3;
+  --color-blush: #f3b9ec;
 
   --radius-card: 1.5rem;
 
@@ -30,17 +33,10 @@
 
 :root {
   color-scheme: light;
-  --header-h: 4rem;
-}
-
-@media (min-width: 768px) {
-  :root {
-    --header-h: 4.5rem;
-  }
 }
 
 html {
-  scroll-padding-top: calc(var(--header-h) + 1rem);
+  scroll-padding-top: 1.5rem;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -52,10 +48,10 @@ body {
 /* The one heading style used everywhere. */
 .heading {
   font-family: var(--font-display);
-  font-weight: 800;
-  font-stretch: 110%;
-  letter-spacing: -0.02em;
-  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  word-spacing: 0.06em;
+  line-height: 0.98;
   text-wrap: balance;
 }
 
@@ -91,6 +87,15 @@ html.has-ball-cursor [contenteditable="true"] {
   from {
     opacity: 0;
     translate: 0 2rem;
+  }
+}
+
+@keyframes bar-fill {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
   }
 }
 

@@ -105,7 +105,7 @@ function TeamPanel({ team, photo, onClose }: { team: Team; photo: ReactNode; onC
   // While open: focus the panel, close on Escape, and stop the page behind from scrolling or being tabbed to.
   useEffect(() => {
     closeButton.current?.focus();
-    const background = document.querySelectorAll<HTMLElement>("body > header, #main, body > footer");
+    const background = document.querySelectorAll<HTMLElement>("#site-nav, #main, body > footer");
     background.forEach((el) => (el.inert = true));
     document.body.style.overflow = "hidden";
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();

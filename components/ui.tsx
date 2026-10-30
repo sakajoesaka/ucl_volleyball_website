@@ -7,8 +7,8 @@ export function Container({ children, className = "" }: { children: ReactNode; c
 }
 
 const headingSizes = {
-  xl: "text-[2.5rem] sm:text-5xl md:text-6xl",
-  lg: "text-3xl md:text-[2.75rem]",
+  xl: "text-[2.9rem] sm:text-6xl md:text-7xl lg:text-8xl",
+  lg: "text-[2rem] md:text-5xl",
   md: "text-xl md:text-2xl",
 };
 
@@ -33,16 +33,33 @@ export function Heading({
   );
 }
 
-// The first block on every page except Home, with the gap below the menu bar built in.
+// Big overlapping background circles (they double as volleyballs). Purely decorative.
+export function Circles({ className = "" }: { className?: string }) {
+  return (
+    <div
+      aria-hidden="true"
+      className={`pointer-events-none absolute inset-0 -z-10 overflow-hidden ${className}`}
+    >
+      <div className="absolute -top-[30%] right-[-12%] aspect-square w-[min(70vw,40rem)] rounded-full bg-blush/70" />
+      <div className="absolute bottom-[-55%] left-[-18%] aspect-square w-[min(80vw,34rem)] rounded-full bg-blush/50" />
+      <div className="absolute top-[35%] right-[22%] hidden aspect-square w-[16rem] rounded-full bg-lilac/25 md:block" />
+    </div>
+  );
+}
+
+// The first block on pages without a photo header: a lilac band with circles and a big title.
+// The top padding leaves room for the floating logo and menu button.
 export function PageHeader({ title, intro }: { title: string; intro?: ReactNode }) {
   return (
-    <Container className="pt-12 pb-10 md:pt-20 md:pb-14">
-      <div aria-hidden="true" className="mb-5 h-1.5 w-14 rounded-full bg-lilac" />
-      <Heading as="h1" size="xl" className="text-brand">
-        {title}
-      </Heading>
-      {intro && <p className="mt-5 max-w-2xl text-lg text-muted md:text-xl">{intro}</p>}
-    </Container>
+    <section className="relative isolate overflow-hidden bg-band">
+      <Circles />
+      <Container className="pt-28 pb-14 md:pt-40 md:pb-20">
+        <Heading as="h1" size="xl" className="max-w-4xl text-brand-950">
+          {title}
+        </Heading>
+        {intro && <p className="mt-6 max-w-2xl text-lg text-brand-950/80 md:text-xl">{intro}</p>}
+      </Container>
+    </section>
   );
 }
 

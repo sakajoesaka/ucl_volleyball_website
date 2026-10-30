@@ -8,7 +8,7 @@ import { VolleyballCursor } from "@/components/VolleyballCursor";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const archivo = Archivo({ subsets: ["latin"], variable: "--font-archivo", axes: ["wdth"] });
+const archivo = Archivo({ subsets: ["latin"], variable: "--font-archivo" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
