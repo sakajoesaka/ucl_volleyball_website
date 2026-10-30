@@ -4,7 +4,6 @@
 export const site = {
   name: "UCL Volleyball",
   fullName: "UCL Volleyball Society",
-  tagline: "Competitive on court, close-knit off it. Everyone is welcome.",
   description:
     "UCL Volleyball Society: a welcoming, competitive and social volleyball club at University College London. All levels welcome, with three indoor sessions a week, five teams, socials and trips.",
 
@@ -21,6 +20,7 @@ export const site = {
 
   membershipName: "UCL Volleyball Membership",
   membershipPrice: "£80",
+  memberCount: "200+",
   foundedYear: 1996,
   copyright: "© 2026 UCL Volleyball Society",
 };

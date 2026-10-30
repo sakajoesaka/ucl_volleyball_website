@@ -5,8 +5,9 @@ import { Send } from "lucide-react";
 import { site } from "@/content/site";
 
 const fieldClasses =
-  "mt-2 block w-full rounded-xl border border-line bg-white px-4 py-3 text-base text-ink placeholder:text-muted/60 transition-colors focus:border-brand focus:outline-none focus:ring-2 focus:ring-lilac/40";
+  "mt-2 block w-full rounded-xl border border-white/20 bg-white px-4 py-3 text-base text-ink transition-colors focus:border-lilac focus:outline-none focus:ring-2 focus:ring-lilac/60";
 
+// Styled for the purple panel on the Home page.
 export function FeedbackForm() {
   const [sent, setSent] = useState(false);
 
@@ -46,14 +47,14 @@ export function FeedbackForm() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
         <button
           type="submit"
-          className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-brand px-7 whitespace-nowrap py-3 font-semibold text-white transition-colors hover:bg-brand-800"
+          className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-lilac px-7 py-3 font-semibold whitespace-nowrap text-brand-950 transition-colors hover:bg-lilac-300"
         >
           <Send className="size-4" aria-hidden="true" />
           Send Message
         </button>
-        <p className="text-sm text-muted">This opens your email app with your message ready to send.</p>
+        <p className="text-sm text-white/70">This opens your email app with your message ready to send.</p>
       </div>
-      <p role="status" className="text-sm font-medium text-brand">
+      <p role="status" className="text-sm font-medium text-lilac-200">
         {sent && (
           <>
             Your email app should now be open. If nothing happened, email us at{" "}

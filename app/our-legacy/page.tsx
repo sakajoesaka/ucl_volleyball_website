@@ -1,9 +1,9 @@
-import { Medal, Trophy } from "lucide-react";
 import { teams } from "@/content/achievements";
 import { images } from "@/content/images";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/metadata";
 import { Photo } from "@/components/Photo";
+import { TeamCards } from "@/components/TeamCards";
 import { Container, Heading, PageHeader } from "@/components/ui";
 
 export const metadata = pageMetadata({
@@ -21,20 +21,26 @@ export default function LegacyPage() {
         intro={`Volleyball at UCL since ${site.foundedYear}: a club that wins trophies and makes friends for life.`}
       />
 
-      <section className="pb-16 md:pb-24">
-        <Container className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-          <Photo
-            image={images.teamHuddle}
-            sizes="(min-width: 1024px) 560px, 100vw"
-            preload
-            className="aspect-[4/3] rounded-[var(--radius-card)]"
-          />
-          <div>
-            <Heading className="text-brand">Our Story</Heading>
-            <div className="mt-5 space-y-4 text-lg text-muted">
+      {/* Our story, over a full-width photo */}
+      <section className="relative isolate overflow-hidden bg-brand-950">
+        <Photo
+          image={images.teamHuddle}
+          sizes="100vw"
+          preload
+          className="absolute inset-0 -z-10"
+          imgClassName="object-[60%_center]"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 bg-gradient-to-t from-brand-950 via-brand-950/75 to-brand-950/10 md:bg-gradient-to-r md:from-brand-950/95 md:via-brand-950/70 md:to-brand-950/5"
+        />
+        <Container className="flex min-h-[36rem] items-end py-14 md:min-h-[40rem] md:items-center md:py-24">
+          <div className="max-w-xl text-white">
+            <Heading>Our Story</Heading>
+            <div className="mt-5 space-y-4 text-lg text-white/85">
               <p>
                 UCL Volleyball was founded in{" "}
-                <strong className="font-semibold text-ink">{site.foundedYear}</strong> by a small group of
+                <strong className="font-semibold text-white">{site.foundedYear}</strong> by a small group of
                 students who loved the game. Since then it has grown into a large, lively community on campus.
               </p>
               <p>
@@ -50,48 +56,28 @@ export default function LegacyPage() {
       <section className="bg-white py-16 md:py-24">
         <Container>
           <Heading className="text-brand">Achievements</Heading>
-          <p className="mt-4 max-w-2xl text-lg text-muted">Highlights from each of our five teams.</p>
-
-          <ul className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {teams.map((team) => (
-              <li
+          <p className="mt-4 max-w-2xl text-lg text-muted">
+            Highlights from each of our five teams. Tap a team to meet them.
+          </p>
+          <TeamCards
+            teams={teams}
+            cardPhotos={teams.map((team) => (
+              <Photo
                 key={team.name}
-                className="flex flex-col overflow-hidden rounded-[var(--radius-card)] border border-line bg-paper"
-              >
-                <Photo
-                  image={team.image}
-                  sizes="(min-width: 1024px) 360px, (min-width: 768px) 50vw, 100vw"
-                  className="aspect-[16/10]"
-                />
-                <div className="flex flex-1 flex-col p-6 md:p-7">
-                  <Heading as="h3" size="md" className="text-ink">
-                    {team.name}
-                  </Heading>
-                  {team.summary && <p className="mt-3 text-muted">{team.summary}</p>}
-                  <ul className="mt-4 space-y-3">
-                    {team.achievements.map((item) => (
-                      <li key={item.text} className="flex gap-3">
-                        <span
-                          className={`mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full ${
-                            item.title ? "bg-brand text-lilac-200" : "bg-lilac-100 text-brand"
-                          }`}
-                        >
-                          {item.title ? (
-                            <Trophy className="size-3.5" aria-hidden="true" />
-                          ) : (
-                            <Medal className="size-3.5" aria-hidden="true" />
-                          )}
-                        </span>
-                        <span className={item.title ? "font-semibold text-ink" : "text-ink/85"}>
-                          {item.text}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </li>
+                image={team.image}
+                sizes="(min-width: 1024px) 360px, (min-width: 768px) 50vw, 100vw"
+                className="aspect-[16/10]"
+              />
             ))}
-          </ul>
+            panelPhotos={teams.map((team) => (
+              <Photo
+                key={team.name}
+                image={team.image}
+                sizes="(min-width: 640px) 672px, 100vw"
+                className="aspect-[16/9] sm:aspect-[2/1]"
+              />
+            ))}
+          />
         </Container>
       </section>
     </>

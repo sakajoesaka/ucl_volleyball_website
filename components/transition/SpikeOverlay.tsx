@@ -1,11 +1,12 @@
 "use client";
 
-import { motion, type Transition } from "framer-motion";
+import { motion, type Easing, type Transition } from "framer-motion";
 import { useId, useRef, useState, type SVGProps } from "react";
 
-// play:   stick figure jumps and spikes, ball flies at the viewer until it fills the screen
+// play:   a player runs in, jumps and spikes the ball over a net into the court;
+//         purple spreads out from where the ball lands until it fills the screen
 // hold:   screen stays covered while the next page loads (usually instant, it's prefetched)
-// reveal: ball bursts past the viewer and fades, uncovering the new page
+// reveal: the purple fades away, uncovering the new page
 export type OverlayStage = "play" | "hold" | "reveal";
 
 export type OverlayProps = {
@@ -15,53 +16,90 @@ export type OverlayProps = {
   onDone: () => void;
 };
 
-// Timings in seconds. Covered at LAUNCH + FLIGHT, total with reveal is about 0.85s.
-const FIGURE_DURATION = 0.42;
-const LAUNCH = 0.26;
-const FLIGHT = 0.32;
-const REVEAL = 0.26;
+// Change this one number to speed the whole animation up (below 1) or slow it down (above 1).
+const SPEED = 1;
+const s = (seconds: number) => seconds * SPEED;
 
-// Keyframe times, as fractions of FIGURE_DURATION: stand, crouch, wind up, contact, follow through.
-const POSE_TIMES = [0, 0.24, 0.52, 0.64, 1];
+// Timings in seconds. The screen is covered at IMPACT + SPREAD; with REVEAL the total is about 1.3s.
+const IMPACT = s(0.7);
+const SPREAD = s(0.3);
+const REVEAL = s(0.3);
 
-// Stick figure poses, drawn in a 200 x 380 box (viewBox starts at y = -80 so the ball fits above).
-const VIEW = { x: 0, y: -80, w: 200, h: 380 };
-const BODY_Y = [0, 9, -52, -55, -40];
+// The scene is drawn in a 400 x 300 box. The floor is at y = 270 and the net at x = 230.
+const SCENE = { w: 400, h: 300 };
+const FLOOR_Y = 270;
+const BALL_R = 10;
+const LANDING = { x: 330, y: FLOOR_Y - BALL_R };
+
+// Player poses: stand, step, plant, take off, wind up, hit, follow through, land.
+// Limbs are drawn relative to the hip; HIP_X/HIP_Y move the whole body.
+const POSE_TIMES_S = [0, 0.14, 0.28, 0.37, 0.49, 0.56, 0.66, 0.8];
+const POSE_DURATION = s(POSE_TIMES_S[POSE_TIMES_S.length - 1]);
+const POSE_TIMES = POSE_TIMES_S.map((t) => t / POSE_TIMES_S[POSE_TIMES_S.length - 1]);
+
+const HIP_X = [70, 115, 150, 160, 168, 172, 176, 180];
+const HIP_Y = [206, 206, 224, 196, 150, 146, 170, 220];
+const TORSO = [
+  "M0 0 L0 -60",
+  "M0 0 L4 -59",
+  "M0 0 L14 -54",
+  "M0 0 L6 -60",
+  "M0 0 L-6 -60",
+  "M0 0 L8 -60",
+  "M0 0 L14 -56",
+  "M0 0 L8 -56",
+];
+const HEAD_X = [0, 5, 19, 8, -6, 11, 19, 11];
+const HEAD_Y = [-76, -75, -68, -76, -76, -75, -70, -71];
 const HITTING_ARM = [
-  "M100 104 L110 128 L114 152",
-  "M100 104 L88 126 L76 142",
-  "M100 104 L84 86 L90 60",
-  "M100 104 L114 78 L126 50",
-  "M100 104 L120 118 L126 142",
+  "M0 -54 L6 -30 L8 -6",
+  "M4 -53 L-4 -30 L-10 -10",
+  "M13 -48 L-6 -36 L-24 -30",
+  "M6 -54 L16 -76 L22 -98",
+  "M-5 -54 L-22 -66 L-14 -88",
+  "M8 -54 L18 -78 L28 -102",
+  "M13 -50 L24 -28 L20 -4",
+  "M8 -50 L16 -28 L18 -6",
 ];
 const OTHER_ARM = [
-  "M100 104 L90 128 L86 152",
-  "M100 104 L86 130 L72 146",
-  "M100 104 L114 82 L124 58",
-  "M100 104 L94 124 L98 142",
-  "M100 104 L92 126 L94 148",
-];
-const BACK_LEG = [
-  "M100 172 L94 214 L88 256",
-  "M100 172 L114 206 L100 246",
-  "M100 172 L112 202 L100 232",
-  "M100 172 L108 210 L104 246",
-  "M100 172 L98 214 L92 254",
+  "M0 -54 L-6 -30 L-6 -6",
+  "M4 -53 L14 -32 L20 -14",
+  "M13 -48 L-4 -34 L-20 -24",
+  "M6 -54 L18 -74 L26 -94",
+  "M-5 -54 L12 -72 L26 -88",
+  "M8 -54 L4 -32 L-2 -12",
+  "M13 -50 L4 -30 L-4 -12",
+  "M8 -50 L0 -28 L-4 -6",
 ];
 const FRONT_LEG = [
-  "M100 172 L106 214 L112 256",
-  "M100 172 L118 210 L112 250",
-  "M100 172 L94 206 L84 236",
-  "M100 172 L96 212 L90 248",
-  "M100 172 L104 214 L110 254",
+  "M0 0 L6 32 L4 64",
+  "M0 0 L14 28 L20 60",
+  "M0 0 L22 18 L12 46",
+  "M0 0 L4 32 L-2 64",
+  "M0 0 L14 26 L2 48",
+  "M0 0 L12 28 L6 56",
+  "M0 0 L10 30 L8 62",
+  "M0 0 L16 22 L8 50",
 ];
-const SHADOW_RX = [26, 30, 14, 13, 18];
+const BACK_LEG = [
+  "M0 0 L-6 32 L-8 64",
+  "M0 0 L-10 30 L-22 56",
+  "M0 0 L16 22 L-4 46",
+  "M0 0 L-4 32 L-12 62",
+  "M0 0 L4 30 L-12 50",
+  "M0 0 L2 30 L-8 56",
+  "M0 0 L-2 32 L-6 62",
+  "M0 0 L6 24 L-6 50",
+];
+const SHADOW_RX = [22, 22, 26, 20, 12, 12, 16, 24];
 
-// The small ball drops in from the toss and meets the hand at contact.
-const SMALL_BALL_R = 12;
-const SMALL_BALL_X = [164, 156, 142, 134, 134];
-const SMALL_BALL_Y = [-70, -60, -38, -22, -22];
-const CONTACT = { x: 134, y: -22 };
+// The set ball rises, drops to the player's hand, then is spiked down past the net.
+const BALL_TIMES_S = [0, 0.14, 0.28, 0.37, 0.49, 0.56, 0.7];
+const BALL_TIMES = BALL_TIMES_S.map((t) => t / BALL_TIMES_S[BALL_TIMES_S.length - 1]);
+const BALL_X = [262, 252, 236, 226, 214, 208, LANDING.x];
+const BALL_Y = [130, 60, 20, 14, 24, 34, LANDING.y];
+// The last segment (the spike) speeds up like a real hit ball.
+const BALL_EASE: Easing[] = ["easeOut", "easeInOut", "easeInOut", "easeIn", "easeIn", [0.5, 0, 0.9, 0.5]];
 
 export default function SpikeOverlay(props: OverlayProps) {
   return props.reduced ? <FadeOverlay {...props} /> : <SpikeAnimation {...props} />;
@@ -96,109 +134,138 @@ function SpikeAnimation({ stage, onCovered, onDone }: OverlayProps) {
   const [geo] = useState(() => {
     const vw = window.innerWidth;
     const vh = window.innerHeight;
-    const width = Math.min(vw * 0.46, vh * 0.34);
-    const scale = width / VIEW.w;
-    const height = VIEW.h * scale;
-    // Big enough to cover the screen corners when centred.
-    const ballSize = Math.max(vw, vh) * 1.6;
-    return {
-      width,
-      height,
-      ballSize,
-      // Where the hit happens, relative to the centre of the screen.
-      startX: -width / 2 + (CONTACT.x - VIEW.x) * scale,
-      startY: -0.42 * height + (CONTACT.y - VIEW.y) * scale,
-      startScale: (SMALL_BALL_R * 2 * scale) / ballSize,
-    };
+    const width = Math.min(vw * 0.94, 680, vh * 0.62 * (SCENE.w / SCENE.h));
+    const scale = width / SCENE.w;
+    const height = SCENE.h * scale;
+    // Where the ball lands, on screen.
+    const x = vw / 2 - width / 2 + LANDING.x * scale;
+    const y = vh / 2 - height / 2 + LANDING.y * scale;
+    // The purple circle must reach the furthest corner of the screen from there.
+    const reach = Math.max(
+      Math.hypot(x, y),
+      Math.hypot(vw - x, y),
+      Math.hypot(x, vh - y),
+      Math.hypot(vw - x, vh - y),
+    );
+    const size = reach * 2 + 8;
+    return { width, height, x, y, size, startScale: (BALL_R * 2 * scale) / size };
   });
 
   const playing = stage === "play";
-  const pose: Transition = { duration: FIGURE_DURATION, times: POSE_TIMES, ease: "easeOut" };
+  const pose: Transition = { duration: POSE_DURATION, times: POSE_TIMES, ease: "easeInOut" };
   const visibility = { opacity: playing ? 1 : 0 };
-  const visibilityTransition: Transition = { duration: playing ? 0.08 : 0 };
-
-  const flight: Transition = {
-    delay: LAUNCH,
-    duration: FLIGHT,
-    // Ease-in so the ball speeds up as it "gets closer".
-    scale: { delay: LAUNCH, duration: FLIGHT, ease: [0.7, 0, 0.84, 0] },
-    x: { delay: LAUNCH, duration: FLIGHT, ease: [0.3, 0, 0.7, 0.6] },
-    y: { delay: LAUNCH, duration: FLIGHT, ease: [0.3, 0, 0.7, 0.6] },
-    rotate: { delay: LAUNCH, duration: FLIGHT, ease: "linear" },
-    opacity: { delay: LAUNCH, duration: 0 },
-  };
+  const visibilityTransition: Transition = { duration: playing ? s(0.12) : 0 };
 
   return (
     <div aria-hidden="true" className="fixed inset-0 z-[150] overflow-hidden">
       <motion.div
-        className="absolute inset-0 bg-paper/85"
+        className="absolute inset-0 bg-paper/90"
         initial={{ opacity: 0 }}
         animate={visibility}
         transition={visibilityTransition}
       />
 
       <motion.svg
-        viewBox={`${VIEW.x} ${VIEW.y} ${VIEW.w} ${VIEW.h}`}
+        viewBox={`0 0 ${SCENE.w} ${SCENE.h}`}
+        overflow="visible"
         className="absolute top-1/2 left-1/2"
-        style={{ width: geo.width, height: geo.height, translate: "-50% -42%" }}
+        style={{ width: geo.width, height: geo.height, translate: "-50% -50%" }}
         initial={{ opacity: 0 }}
         animate={visibility}
         transition={visibilityTransition}
       >
+        {/* Floor, running the full width of the screen */}
+        <line x1={-2000} x2={2400} y1={FLOOR_Y} y2={FLOOR_Y} stroke="#c77ddb" strokeWidth={2} opacity={0.6} />
+
+        {/* Net, seen from the side */}
+        <line x1={230} x2={230} y1={84} y2={FLOOR_Y} stroke="#5b5170" strokeWidth={3} strokeLinecap="round" />
+        <rect x={225} y={88} width={10} height={56} fill="#ead0f2" stroke="#c77ddb" strokeWidth={1} />
+        {[96, 104, 112, 120, 128, 136].map((y) => (
+          <line key={y} x1={225} x2={235} y1={y} y2={y} stroke="#c77ddb" strokeWidth={1} />
+        ))}
+        <rect x={222} y={83} width={16} height={6} rx={1.5} fill="#4b1a7a" />
+
         <motion.ellipse
-          cx={100}
-          cy={262}
-          ry={5}
+          cy={FLOOR_Y + 1}
+          ry={4}
           fill="#c77ddb"
-          opacity={0.45}
-          initial={{ rx: SHADOW_RX[0] }}
-          animate={{ rx: SHADOW_RX }}
+          opacity={0.4}
+          initial={{ cx: HIP_X[0], rx: SHADOW_RX[0] }}
+          animate={{ cx: HIP_X, rx: SHADOW_RX }}
           transition={pose}
         />
+
+        {/* The player */}
         <motion.g
           fill="none"
           stroke="#4b1a7a"
           strokeWidth={9}
           strokeLinecap="round"
           strokeLinejoin="round"
-          initial={{ y: 0 }}
-          animate={{ y: BODY_Y }}
+          initial={{ x: HIP_X[0], y: HIP_Y[0] }}
+          animate={{ x: HIP_X, y: HIP_Y }}
           transition={pose}
         >
-          <circle cx={101} cy={70} r={15} fill="#4b1a7a" stroke="none" />
-          <path d="M100 92 L100 172" />
-          <motion.path initial={{ d: OTHER_ARM[0] }} animate={{ d: OTHER_ARM }} transition={pose} />
-          <motion.path initial={{ d: BACK_LEG[0] }} animate={{ d: BACK_LEG }} transition={pose} />
+          <motion.path
+            initial={{ d: BACK_LEG[0] }}
+            animate={{ d: BACK_LEG }}
+            transition={pose}
+            opacity={0.75}
+          />
+          <motion.path
+            initial={{ d: OTHER_ARM[0] }}
+            animate={{ d: OTHER_ARM }}
+            transition={pose}
+            opacity={0.75}
+          />
+          <motion.path initial={{ d: TORSO[0] }} animate={{ d: TORSO }} transition={pose} />
+          <motion.circle
+            r={13}
+            fill="#4b1a7a"
+            stroke="none"
+            initial={{ cx: HEAD_X[0], cy: HEAD_Y[0] }}
+            animate={{ cx: HEAD_X, cy: HEAD_Y }}
+            transition={pose}
+          />
           <motion.path initial={{ d: FRONT_LEG[0] }} animate={{ d: FRONT_LEG }} transition={pose} />
           <motion.path initial={{ d: HITTING_ARM[0] }} animate={{ d: HITTING_ARM }} transition={pose} />
         </motion.g>
+
+        {/* The ball */}
         <motion.g
-          initial={{ x: SMALL_BALL_X[0], y: SMALL_BALL_Y[0], opacity: 1 }}
-          animate={{ x: SMALL_BALL_X, y: SMALL_BALL_Y, opacity: [1, 1, 1, 1, 0] }}
-          transition={{
-            ...pose,
-            opacity: { duration: LAUNCH + 0.01, times: [0, 0.3, 0.6, 0.97, 1] },
-          }}
+          initial={{ x: BALL_X[0], y: BALL_Y[0] }}
+          animate={{ x: BALL_X, y: BALL_Y }}
+          transition={{ duration: IMPACT, times: BALL_TIMES, ease: BALL_EASE }}
         >
-          <BallArt x={-SMALL_BALL_R} y={-SMALL_BALL_R} width={SMALL_BALL_R * 2} height={SMALL_BALL_R * 2} />
+          <motion.g
+            initial={{ rotate: 0 }}
+            animate={{ rotate: 540 }}
+            transition={{ duration: IMPACT, ease: "easeIn" }}
+          >
+            <BallArt x={-BALL_R} y={-BALL_R} width={BALL_R * 2} height={BALL_R * 2} />
+          </motion.g>
         </motion.g>
       </motion.svg>
 
+      {/* Purple spreading out from where the ball lands */}
       <motion.div
-        className="absolute top-1/2 left-1/2 will-change-transform"
+        className="absolute rounded-full bg-brand will-change-transform"
         style={{
-          width: geo.ballSize,
-          height: geo.ballSize,
-          marginLeft: -geo.ballSize / 2,
-          marginTop: -geo.ballSize / 2,
+          width: geo.size,
+          height: geo.size,
+          left: geo.x - geo.size / 2,
+          top: geo.y - geo.size / 2,
         }}
-        initial={{ x: geo.startX, y: geo.startY, scale: geo.startScale, rotate: 0, opacity: 0 }}
-        animate={
+        initial={{ scale: geo.startScale, opacity: 0 }}
+        animate={stage === "reveal" ? { scale: 1, opacity: 0 } : { scale: 1, opacity: 1 }}
+        transition={
           stage === "reveal"
-            ? { x: 0, y: 0, scale: 1.5, rotate: 150, opacity: 0 }
-            : { x: 0, y: 0, scale: 1, rotate: 120, opacity: 1 }
+            ? { duration: REVEAL, ease: "easeOut" }
+            : {
+                scale: { delay: IMPACT, duration: SPREAD, ease: [0.55, 0, 0.3, 1] },
+                opacity: { delay: IMPACT, duration: 0 },
+              }
         }
-        transition={stage === "reveal" ? { duration: REVEAL, ease: [0.2, 0.7, 0.3, 1] } : flight}
         onAnimationComplete={() => {
           if (stage === "reveal") onDone();
           else if (!covered.current) {
@@ -206,9 +273,7 @@ function SpikeAnimation({ stage, onCovered, onDone }: OverlayProps) {
             onCovered();
           }
         }}
-      >
-        <BallArt className="size-full" />
-      </motion.div>
+      />
     </div>
   );
 }

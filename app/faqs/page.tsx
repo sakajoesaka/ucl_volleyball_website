@@ -34,10 +34,10 @@ export default function FaqsPage() {
         intro="Everything you need to know about joining and playing with UCL Volleyball."
       />
       <Container className="pb-16 md:pb-24">
-        <div className="max-w-3xl">
+        <div>
           <FaqList faqs={faqs} />
         </div>
-        <div className="mt-12 max-w-3xl rounded-[var(--radius-card)] bg-lilac-100 p-7 md:p-9">
+        <div className="mt-12 rounded-[var(--radius-card)] bg-lilac-100 p-7 md:p-9">
           <Heading size="md" className="text-brand">
             Still Have a Question?
           </Heading>

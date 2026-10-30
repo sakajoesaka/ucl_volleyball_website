@@ -81,6 +81,19 @@ html.has-ball-cursor [contenteditable="true"] {
   cursor: text !important;
 }
 
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    translate: 0 2rem;
+  }
+}
+
 @keyframes ball-spin {
   to {
     rotate: 360deg;

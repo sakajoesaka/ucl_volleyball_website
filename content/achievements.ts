@@ -1,13 +1,23 @@
 import { images, type SiteImage } from "./images";
 
-// Team achievements shown on the Our Legacy page, one card per team.
-// `title: true` marks a championship win (shown with a trophy).
+// Teams on the Our Legacy page. Each card opens a panel with the full details.
+//
+// - `title: true` marks a championship win (shown with a trophy).
+// - Text in [square brackets] shows on the site as a placeholder tag.
+//   Replace it with the real details (and delete the brackets) when you have them.
 
 export type Team = {
   name: string;
   image: SiteImage;
   summary?: string;
   achievements: { text: string; title?: boolean }[];
+  // The longer description shown when the card is opened. One string per paragraph.
+  about: string[];
+  captain: {
+    name: string;
+    course: string;
+    email: string;
+  };
 };
 
 export const teams: Team[] = [
@@ -21,12 +31,23 @@ export const teams: Team[] = [
       { text: "2nd at the Volleyball England Student Cup 2025" },
       { text: "3rd at the Volleyball England Student Cup 2026" },
     ],
+    about: [
+      "Our top men's side and one of the most successful teams in the club's history, competing for titles indoors and on the beach.",
+      "[Placeholder: league, training schedule and how trials work.]",
+    ],
+    captain: {
+      name: "Gruia [Surname]",
+      course: "[Course and year]",
+      email: "[Captain's email]",
+    },
   },
   {
     name: "Men's 2nd Team",
     image: images.mensSecond,
     summary: "Competes in BUCS Division 3 South and is the development pathway into the 1st team.",
     achievements: [{ text: "Just missed out on promotion in their first season" }],
+    about: ["[Placeholder: a longer description of the team, its league, training and trials.]"],
+    captain: { name: "[Captain's name]", course: "[Course and year]", email: "[Captain's email]" },
   },
   {
     name: "Women's 1st Team",
@@ -36,6 +57,8 @@ export const teams: Team[] = [
       { text: "Unbeaten on the way to the 2023 title" },
       { text: "Regular top-3 finishes in BUCS South Premier and the National Trophy" },
     ],
+    about: ["[Placeholder: a longer description of the team, its league, training and trials.]"],
+    captain: { name: "[Captain's name]", course: "[Course and year]", email: "[Captain's email]" },
   },
   {
     name: "Women's 2nd Team",
@@ -43,10 +66,14 @@ export const teams: Team[] = [
     achievements: [
       { text: "Won promotion out of their BUCS division in their first ever season", title: true },
     ],
+    about: ["[Placeholder: a longer description of the team, its league, training and trials.]"],
+    captain: { name: "[Captain's name]", course: "[Course and year]", email: "[Captain's email]" },
   },
   {
     name: "Mixed Team",
     image: images.mixedTeam,
     achievements: [{ text: "LUSL Mixed League Champions 2024", title: true }],
+    about: ["[Placeholder: a longer description of the team, its league, training and trials.]"],
+    captain: { name: "[Captain's name]", course: "[Course and year]", email: "[Captain's email]" },
   },
 ];

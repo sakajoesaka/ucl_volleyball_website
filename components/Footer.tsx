@@ -11,7 +11,12 @@ export function Footer() {
       <Container className="grid gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr] md:py-16">
         <div>
           <div className="flex items-center gap-4">
-            <Photo image={images.logo} sizes="64px" className="size-16 shrink-0 rounded-full bg-white/80" />
+            <Photo
+              image={images.logo}
+              sizes="64px"
+              className="size-16 shrink-0"
+              imgClassName="object-contain"
+            />
             <p className="heading text-2xl">{site.fullName}</p>
           </div>
           <p className="mt-5 max-w-sm text-white/75">

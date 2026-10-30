@@ -1,3 +1,5 @@
+import { images, type SiteImage } from "./images";
+
 // Weekly indoor sessions shown on the What We Offer page.
 
 export type Session = {
@@ -33,11 +35,18 @@ export const sessions: Session[] = [
   },
 ];
 
-// Socials and trips listed on the What We Offer page.
-export const socialHighlights = [
-  "Pub crawls",
-  "Karaoke nights",
-  "Tournaments",
-  "The annual Boat Ball",
-  "Beach volleyball trip to Portugal",
+// Socials and trips on the What We Offer page. Clicking one shows its photos.
+// Add more photos to an event by adding more entries to its `images` list
+// (define them in content/images.ts first).
+export type SocialEvent = {
+  name: string;
+  images: SiteImage[];
+};
+
+export const socialEvents: SocialEvent[] = [
+  { name: "Beach volleyball trip to Portugal", images: [images.beachTrip] },
+  { name: "The annual Boat Ball", images: [images.boatBall] },
+  { name: "Tournaments", images: [images.tournament] },
+  { name: "Pub crawls", images: [images.pubCrawl] },
+  { name: "Karaoke nights", images: [images.karaoke] },
 ];

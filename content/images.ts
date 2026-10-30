@@ -64,9 +64,39 @@ export const images = {
     alt: "UCL Volleyball members on a social night out",
     label: "Social night out",
   },
+  pubCrawl: {
+    src: "/images/pub-crawl.jpg",
+    alt: "UCL Volleyball members on a pub crawl",
+    label: "Pub crawl photo",
+  },
+  karaoke: {
+    src: "/images/karaoke-night.jpg",
+    alt: "UCL Volleyball members singing at a karaoke night",
+    label: "Karaoke night photo",
+  },
+  tournament: {
+    src: "/images/tournament.jpg",
+    alt: "UCL Volleyball members playing in a club tournament",
+    label: "Tournament photo",
+  },
+  boatBall: {
+    src: "/images/boat-ball.jpg",
+    alt: "UCL Volleyball members dressed up at the annual Boat Ball",
+    label: "Boat Ball photo",
+  },
   logo: {
     src: "/images/logo.png",
     alt: "UCL Volleyball Society logo",
     label: "Logo",
   },
 } satisfies Record<string, SiteImage>;
+
+// The "Life at the Club" slideshow on the Home page, in order.
+// Add, remove or reorder photos here.
+export const lifeAtTheClub: SiteImage[] = [
+  images.teamCelebration,
+  images.teamHuddle,
+  images.beachTrip,
+  images.socialNight,
+  images.boatBall,
+];

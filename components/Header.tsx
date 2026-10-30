@@ -1,8 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
+import { images } from "@/content/images";
 import { navLinks, site } from "@/content/site";
 import { TransitionLink } from "@/components/transition/TransitionLink";
 import { ButtonLink } from "@/components/ui";
@@ -35,8 +37,8 @@ export function Header() {
             onClick={close}
             className="flex items-center gap-2.5 text-lg font-extrabold text-brand [font-family:var(--font-display)] [font-stretch:110%]"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element -- tiny static SVG */}
-            <img src="/volleyball.svg" alt="" width={32} height={32} className="size-8" />
+            {/* Decorative here: the site name next to it is the link text. */}
+            <Image src={images.logo.src} alt="" width={40} height={40} preload className="size-10" />
             {site.name}
           </TransitionLink>
 
