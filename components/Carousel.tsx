@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState, type ReactNode } from "react";
+import { createContext, useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { REDUCED_MOTION, useMediaQuery } from "@/lib/use-media-query";
 
@@ -15,6 +15,10 @@ type CarouselProps = {
   className?: string;
   controlsClassName?: string;
 };
+
+// Lets something inside a slide know whether its slide is the one showing,
+// e.g. so an expanded panel can close itself when you move on.
+export const SlideActiveContext = createContext(true);
 
 // A swipeable slideshow with story-style progress bars. Uses native scroll snapping,
 // so touch swiping feels natural. Autoplay pauses on hover, touch and keyboard focus.
@@ -32,6 +36,31 @@ export function Carousel({
   const reduceMotion = useMediaQuery(REDUCED_MOTION);
   const count = slides.length;
   const autoPlaying = !!autoPlayMs && !reduceMotion && count > 1;
+
+  // Every slide is as tall as the tallest one. Parts marked `data-collapsible` (like the session
+  // times) don't count, so opening one only makes its own slide taller.
+  useEffect(() => {
+    const el = track.current;
+    if (!el) return;
+    const wrappers = Array.from(el.children) as HTMLElement[];
+    const equalise = () => {
+      wrappers.forEach((w) => (w.style.minHeight = ""));
+      const open = wrappers.map((w) =>
+        Array.from(w.querySelectorAll<HTMLElement>("[data-collapsible]")).reduce(
+          (sum, part) => sum + part.offsetHeight,
+          0,
+        ),
+      );
+      const tallest = Math.max(...wrappers.map((w, i) => w.offsetHeight - open[i]));
+      wrappers.forEach((w, i) => (w.style.minHeight = `${tallest + open[i]}px`));
+    };
+    const observer = new ResizeObserver(equalise);
+    // Watch the slides for width changes, and the collapsible parts as they open and close
+    // (a slide's own height can't shrink while its minimum height holds it open).
+    wrappers.forEach((w) => w.firstElementChild && observer.observe(w.firstElementChild));
+    el.querySelectorAll("[data-collapsible]").forEach((part) => observer.observe(part));
+    return () => observer.disconnect();
+  }, [count]);
 
   const goTo = useCallback(
     (target: number) => {
@@ -102,7 +131,7 @@ export function Carousel({
             const el = e.currentTarget;
             setIndex(Math.round(el.scrollLeft / el.clientWidth));
           }}
-          className="flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex snap-x snap-mandatory items-start overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {slides.map((slide, i) => (
             <div
@@ -111,9 +140,9 @@ export function Carousel({
               aria-roledescription="slide"
               aria-label={`${i + 1} of ${count}`}
               inert={i !== index}
-              className="w-full shrink-0 snap-center"
+              className="flex w-full shrink-0 snap-center flex-col"
             >
-              {slide}
+              <SlideActiveContext value={i === index}>{slide}</SlideActiveContext>
             </div>
           ))}
         </div>

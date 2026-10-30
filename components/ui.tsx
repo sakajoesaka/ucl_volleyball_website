@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { TransitionLink } from "@/components/transition/TransitionLink";
+import { ZoomOnScroll } from "@/components/ZoomOnScroll";
 
 export function Container({ children, className = "" }: { children: ReactNode; className?: string }) {
   return <div className={`mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 ${className}`}>{children}</div>;
@@ -50,17 +51,21 @@ export function Circles({ className = "" }: { className?: string }) {
 // Each page's title band gets its own backdrop, all in the same palette.
 const backdrops = {
   // Overlapping arcs rising from the bottom right.
-  arcs: (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-blush">
-      <div className="absolute right-[-10%] bottom-[-14%] size-[46vw] rounded-full bg-brand md:right-[-12%] md:bottom-[-95%] md:size-[44rem]" />
-      <div className="absolute right-[30%] bottom-[-18%] size-[30vw] rounded-full bg-lilac md:right-[12%] md:bottom-[-85%] md:size-[28rem]" />
-      <div className="absolute top-[-40%] left-[-12%] aspect-square w-[60vw] rounded-full bg-band/70 md:w-[24rem]" />
-    </div>
-  ),
+  arcs: {
+    background: "bg-blush",
+    shapes: (
+      <>
+        <div className="absolute right-[-18%] bottom-[-10%] size-[72vw] rounded-full bg-brand md:right-[-12%] md:bottom-[-26rem] md:size-[44rem]" />
+        <div className="absolute right-[46%] bottom-[-8%] size-[44vw] rounded-full bg-lilac md:right-[14%] md:bottom-[-17rem] md:size-[28rem]" />
+        <div className="absolute top-[-10%] left-[-25%] aspect-square w-[60vw] rounded-full bg-band/70 md:top-[-12rem] md:left-[-8rem] md:w-[24rem]" />
+      </>
+    ),
+  },
   // Ripple rings, like a ball landing on the court.
-  rings: (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-band">
-      <div className="absolute right-[-40%] bottom-[-45%] size-[24rem] md:top-1/2 md:right-[-8%] md:bottom-auto md:size-[44rem] md:-translate-y-1/2">
+  rings: {
+    background: "bg-band",
+    shapes: (
+      <div className="absolute right-[-40%] bottom-[-30%] size-[24rem] md:right-[-10%] md:bottom-[-16rem] md:size-[44rem]">
         {[100, 74, 48].map((size) => (
           <div
             key={size}
@@ -70,30 +75,31 @@ const backdrops = {
         ))}
         <div className="absolute top-1/2 left-1/2 size-[18%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand" />
       </div>
-    </div>
-  ),
+    ),
+  },
   // Scattered dots of different sizes.
-  dots: (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-lilac-100"
-    >
-      <div className="absolute top-[-30%] right-[-20%] aspect-square w-[80vw] rounded-full bg-blush/60 md:right-[-5%] md:w-[34rem]" />
-      {[
-        "top-[18%] right-[14%] hidden size-36 bg-brand md:block",
-        "top-[64%] right-[22%] hidden size-16 bg-lilac md:block",
-        "top-[10%] right-[40%] hidden size-10 bg-band md:block",
-        "bottom-[5%] right-[6%] size-16 bg-brand md:size-24 md:bg-band",
-        "bottom-[13%] right-[34%] size-8 bg-lilac md:hidden",
-        "bottom-[4%] right-[58%] size-5 bg-band md:hidden",
-      ].map((dot) => (
-        <div key={dot} className={`absolute rounded-full ${dot}`} />
-      ))}
-    </div>
-  ),
+  dots: {
+    background: "bg-lilac-100",
+    shapes: (
+      <>
+        <div className="absolute top-[-30%] right-[-20%] aspect-square w-[80vw] rounded-full bg-blush/60 md:right-[-5%] md:w-[34rem]" />
+        {[
+          "top-[18%] right-[14%] hidden size-36 bg-brand md:block",
+          "top-[64%] right-[22%] hidden size-16 bg-lilac md:block",
+          "top-[10%] right-[40%] hidden size-10 bg-band md:block",
+          "bottom-[5%] right-[6%] size-16 bg-brand md:size-24 md:bg-band",
+          "bottom-[13%] right-[34%] size-8 bg-lilac md:hidden",
+          "bottom-[4%] right-[58%] size-5 bg-band md:hidden",
+        ].map((dot) => (
+          <div key={dot} className={`absolute rounded-full ${dot}`} />
+        ))}
+      </>
+    ),
+  },
 };
 
-// The first block on pages without a photo header: a coloured band with a big title.
+// The first block on pages without a photo header: a tall coloured band with a big title.
+// The shapes zoom in slowly as you scroll, like the photo headers.
 // The top padding leaves room for the floating logo and menu button.
 export function PageHeader({
   title,
@@ -104,9 +110,16 @@ export function PageHeader({
   intro?: ReactNode;
   backdrop: keyof typeof backdrops;
 }) {
+  const { background, shapes } = backdrops[backdrop];
+  // A fixed height on bigger screens keeps the shapes in the same place under the text.
   return (
-    <section className="relative isolate overflow-hidden">
-      {backdrops[backdrop]}
+    <section className="relative isolate flex min-h-[85svh] flex-col justify-center overflow-hidden md:min-h-[44rem] md:justify-start">
+      <div
+        aria-hidden="true"
+        className={`pointer-events-none absolute inset-0 -z-10 overflow-hidden ${background}`}
+      >
+        <ZoomOnScroll className="absolute inset-0">{shapes}</ZoomOnScroll>
+      </div>
       {/* Extra room at the bottom on phones keeps the shapes clear of the text. */}
       <Container className="pt-28 pb-32 md:pt-40 md:pb-20">
         <Heading as="h1" size="xl" className="max-w-4xl text-brand-950">

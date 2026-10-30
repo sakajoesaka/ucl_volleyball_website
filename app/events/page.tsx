@@ -74,16 +74,18 @@ async function EventList() {
 }
 
 // Poster-style card: picture on top, bold title, then the date and time along the bottom.
+// It lifts and the poster shifts on hover, but it isn't a link, so clicking does nothing.
 function EventCard({ event, featured, palette }: { event: ClubEvent; featured: boolean; palette: number }) {
   const date = formatEventDate(event.date);
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-line bg-white">
-      <div className="relative">
+    <article className="group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-line bg-white transition-[translate,box-shadow,border-color] duration-300 ease-[var(--ease-snap)] hover:-translate-y-1.5 hover:border-lilac hover:shadow-xl hover:shadow-brand/10">
+      <div className="relative overflow-hidden">
         {event.image ? (
           <Photo
             image={event.image}
             sizes={featured ? "(min-width: 1024px) 760px, 100vw" : "(min-width: 1024px) 370px, 100vw"}
             className={featured ? "aspect-[16/9]" : "aspect-[4/3]"}
+            imgClassName="transition-transform duration-500 ease-[var(--ease-snap)] group-hover:scale-105"
           />
         ) : (
           <EventPoster date={date} palette={palette} featured={featured} />
@@ -108,11 +110,13 @@ function EventCard({ event, featured, palette }: { event: ClubEvent; featured: b
           <MapPin className="mt-1 size-4 shrink-0 text-lilac" aria-hidden="true" />
           {event.location}
         </p>
-        <div className="mt-auto flex items-center justify-between gap-4 border-t border-line pt-4 font-semibold text-ink">
-          <time dateTime={event.date}>
-            {date.weekday} {date.day} {date.month} {date.year}
-          </time>
-          <span className="text-right">{event.time}</span>
+        <div className="mt-auto pt-8">
+          <div className="flex items-center justify-between gap-4 border-t border-line pt-3 font-semibold text-ink">
+            <time dateTime={event.date}>
+              {date.weekday} {date.day} {date.month} {date.year}
+            </time>
+            <span className="text-right">{event.time}</span>
+          </div>
         </div>
       </div>
     </article>
@@ -142,9 +146,11 @@ function EventPoster({
       className={`relative isolate overflow-hidden ${colours.bg} ${featured ? "aspect-[16/9]" : "aspect-[4/3]"}`}
     >
       <div
-        className={`absolute top-[-35%] right-[-42%] -z-10 aspect-square h-[150%] rounded-full ${colours.circle}`}
+        className={`absolute top-[-35%] right-[-42%] -z-10 aspect-square h-[150%] rounded-full transition-transform duration-500 ease-[var(--ease-snap)] group-hover:-translate-x-[8%] group-hover:scale-110 ${colours.circle}`}
       />
-      <div className={`absolute bottom-5 left-6 ${colours.text}`}>
+      <div
+        className={`absolute bottom-5 left-6 transition-transform duration-500 ease-[var(--ease-snap)] group-hover:-translate-y-1.5 ${colours.text}`}
+      >
         <p className="heading text-7xl md:text-8xl">{date.day}</p>
         <p className="heading text-2xl md:text-3xl">{date.month}</p>
       </div>

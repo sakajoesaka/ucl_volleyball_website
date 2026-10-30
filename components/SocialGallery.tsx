@@ -8,8 +8,8 @@ const scatter = [
   { x: "0rem", y: "0rem", rotate: -3 },
   { x: "5rem", y: "-0.25rem", rotate: 2.5 },
   { x: "1.5rem", y: "0.5rem", rotate: -1.5 },
-  { x: "7rem", y: "-0.5rem", rotate: 4 },
-  { x: "3rem", y: "0.25rem", rotate: -2.5 },
+  { x: "7rem", y: "0.5rem", rotate: 4 },
+  { x: "3rem", y: "0.75rem", rotate: -2.5 },
   { x: "6rem", y: "0rem", rotate: 1.5 },
 ];
 

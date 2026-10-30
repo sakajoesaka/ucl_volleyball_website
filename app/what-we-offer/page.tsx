@@ -96,7 +96,7 @@ function MembershipCard({ membership }: { membership: Membership }) {
   const isPlaceholder = hasPlaceholder(price, description, ...includes);
 
   return (
-    <div className="relative isolate grid h-full gap-8 overflow-hidden rounded-[var(--radius-card)] bg-brand p-7 text-white md:grid-cols-2 md:gap-12 md:p-10">
+    <div className="relative isolate grid flex-1 grid-rows-[auto_1fr_auto] gap-8 overflow-hidden rounded-[var(--radius-card)] bg-brand p-7 text-white md:grid-cols-2 md:grid-rows-[1fr_auto] md:gap-12 md:p-10">
       {/* eslint-disable-next-line @next/next/no-img-element -- decorative static SVG */}
       <img
         src="/volleyball.svg"

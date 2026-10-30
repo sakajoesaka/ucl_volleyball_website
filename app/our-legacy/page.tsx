@@ -4,6 +4,7 @@ import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/metadata";
 import { Photo } from "@/components/Photo";
 import { TeamCards } from "@/components/TeamCards";
+import { ZoomOnScroll } from "@/components/ZoomOnScroll";
 import { Container, Heading } from "@/components/ui";
 
 export const metadata = pageMetadata({
@@ -18,13 +19,15 @@ export default function LegacyPage() {
     <>
       {/* The page title and our story, over a full-width photo */}
       <section className="relative isolate overflow-hidden bg-brand-950">
-        <Photo
-          image={images.teamHuddle}
-          sizes="100vw"
-          preload
-          className="absolute inset-0 -z-10"
-          imgClassName="object-[60%_center]"
-        />
+        <ZoomOnScroll className="absolute inset-0 -z-10 origin-[60%_40%]">
+          <Photo
+            image={images.teamHuddle}
+            sizes="100vw"
+            preload
+            className="absolute inset-0"
+            imgClassName="object-[60%_center]"
+          />
+        </ZoomOnScroll>
         <div
           aria-hidden="true"
           className="absolute inset-0 -z-10 bg-gradient-to-t from-brand-950 via-brand-950/75 to-brand-950/10 md:bg-gradient-to-r md:from-brand-950/95 md:via-brand-950/70 md:to-brand-950/5"

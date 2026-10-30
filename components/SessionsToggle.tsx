@@ -1,15 +1,20 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useContext, useId, useState } from "react";
 import { Clock, MapPin, Minus, Plus } from "lucide-react";
 import type { Session } from "@/content/sessions";
 import { WithPlaceholders } from "@/components/Placeholder";
 import { TransitionLink } from "@/components/transition/TransitionLink";
+import { SlideActiveContext } from "@/components/Carousel";
 
 // The "Session times & locations" button on each membership slide, which opens the list in place.
 export function SessionsToggle({ sessions, note }: { sessions: Session[]; note?: string }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
+
+  // Close again as soon as the slideshow moves to another slide.
+  const slideActive = useContext(SlideActiveContext);
+  if (open && !slideActive) setOpen(false);
 
   return (
     <div className="rounded-2xl border border-white/20 bg-white/10">
@@ -34,6 +39,7 @@ export function SessionsToggle({ sessions, note }: { sessions: Session[]; note?:
       </button>
       <div
         id={panelId}
+        data-collapsible
         inert={!open}
         className={`grid transition-[grid-template-rows,opacity] duration-300 ease-[var(--ease-snap)] ${
           open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
