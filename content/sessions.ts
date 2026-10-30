@@ -1,17 +1,17 @@
 import { images, type SiteImage } from "./images";
 
-// Weekly indoor sessions shown on the What We Offer page.
+// Weekly indoor sessions for the Social Membership (shown inside its slide on What We Offer).
 
 export type Session = {
   day: string;
   time: string;
   venue: string;
   area?: string;
-  // Used for the "Map" link. Leave as is unless the venue changes.
+  // Used for the "Map" link. Leave empty ("") to hide the link.
   mapQuery: string;
 };
 
-export const sessions: Session[] = [
+export const socialSessions: Session[] = [
   {
     day: "Tuesday",
     time: "8–10pm",

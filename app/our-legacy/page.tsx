@@ -40,11 +40,6 @@ export default function LegacyPage() {
                 <strong className="font-semibold text-white">{site.foundedYear}</strong> by a small group of
                 students who loved the game. Since then it has grown into a large, lively community on campus.
               </p>
-              <p>
-                Today we balance competitive success with a welcoming social side. Our teams compete in
-                university and London leagues, while players of every level train, play and socialise together
-                each week.
-              </p>
             </div>
           </div>
         </Container>

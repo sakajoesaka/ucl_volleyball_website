@@ -1,18 +1,18 @@
-import { Check, Clock, MapPin } from "lucide-react";
+import { Check } from "lucide-react";
 import { memberships, type Membership } from "@/content/memberships";
-import { sessions, socialEvents } from "@/content/sessions";
+import { socialEvents } from "@/content/sessions";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/metadata";
 import { Photo } from "@/components/Photo";
 import { Carousel } from "@/components/Carousel";
 import { SocialGallery } from "@/components/SocialGallery";
 import { WithPlaceholders, hasPlaceholder } from "@/components/Placeholder";
-import { TransitionLink } from "@/components/transition/TransitionLink";
+import { SessionsToggle } from "@/components/SessionsToggle";
 import { ButtonLink, Container, Heading, PageHeader } from "@/components/ui";
 
 export const metadata = pageMetadata({
   title: "What We Offer",
-  description: `Memberships start from ${site.membershipPrice} a year, covering three indoor sessions every week plus every social. See our memberships, weekly timetable, socials and trips.`,
+  description: `Memberships start from ${site.membershipPrice} a year, covering three indoor sessions every week plus every social. See our memberships, session times, socials and trips.`,
   path: "/what-we-offer",
 });
 
@@ -20,6 +20,7 @@ export default function OfferPage() {
   return (
     <>
       <PageHeader
+        backdrop="arcs"
         title="What We Offer"
         intro="We're a big, welcoming and diverse club. Whether you're a complete beginner or an experienced player, there's a place for you here."
       />
@@ -35,52 +36,6 @@ export default function OfferPage() {
               <MembershipCard key={membership.name} membership={membership} />
             ))}
           />
-        </Container>
-      </section>
-
-      {/* Timetable */}
-      <section className="pb-16 md:pb-24">
-        <Container>
-          <div className="rounded-[var(--radius-card)] border border-line bg-white p-7 md:p-10">
-            <Heading className="text-brand">Weekly Sessions</Heading>
-            <p className="mt-3 text-muted">Included in the {site.membershipName}.</p>
-            <ul className="mt-8 divide-y divide-line">
-              {sessions.map((session) => (
-                <li
-                  key={session.day}
-                  className="grid gap-x-6 gap-y-1.5 py-5 first:pt-0 last:pb-0 sm:grid-cols-[10rem_1fr_auto] sm:items-center"
-                >
-                  <p className="heading text-xl text-ink md:text-2xl">{session.day}</p>
-                  <div className="space-y-1 sm:flex sm:gap-8 sm:space-y-0">
-                    <p className="flex items-center gap-2 font-semibold text-ink">
-                      <Clock className="size-4 text-lilac" aria-hidden="true" />
-                      {session.time}
-                    </p>
-                    <p className="flex items-center gap-2 text-muted">
-                      <MapPin className="size-4 text-lilac" aria-hidden="true" />
-                      {session.venue}
-                      {session.area && `, ${session.area}`}
-                    </p>
-                  </div>
-                  <a
-                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(session.mapQuery)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="justify-self-start text-sm font-semibold text-brand underline decoration-lilac decoration-2 underline-offset-4 hover:text-brand-600"
-                  >
-                    Map<span className="sr-only"> of {session.venue} (opens in a new tab)</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-8 rounded-2xl bg-lilac-50 p-4 text-sm text-muted">
-              Free tickets for each session are released in the members&apos; group.{" "}
-              <TransitionLink href="/faqs" className="font-semibold text-brand underline underline-offset-2">
-                Here&apos;s how to get added
-              </TransitionLink>
-              .
-            </p>
-          </div>
         </Container>
       </section>
 
@@ -137,7 +92,7 @@ export default function OfferPage() {
 }
 
 function MembershipCard({ membership }: { membership: Membership }) {
-  const { name, price, period, description, includes, joinUrl } = membership;
+  const { name, price, period, description, includes, sessions, sessionsNote, joinUrl } = membership;
   const isPlaceholder = hasPlaceholder(price, description, ...includes);
 
   return (
@@ -183,6 +138,9 @@ function MembershipCard({ membership }: { membership: Membership }) {
         <ButtonLink href={joinUrl} variant="lilac" className="mt-8 self-start">
           Join the Society
         </ButtonLink>
+      </div>
+      <div className="md:col-span-2">
+        <SessionsToggle sessions={sessions} note={sessionsNote} />
       </div>
     </div>
   );

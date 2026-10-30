@@ -12,8 +12,8 @@ Built with Next.js, hosted on Vercel.
 | Social media links                                  | `content/socials.ts`                   |
 | WhatsApp/SU links, price, member count, email       | `content/site.ts`                      |
 | Teams: achievements, descriptions, captains         | `content/achievements.ts`              |
-| Memberships slideshow                               | `content/memberships.ts`               |
-| Weekly sessions, and the socials & trips photos     | `content/sessions.ts`                  |
+| Memberships slideshow (incl. each one's sessions)   | `content/memberships.ts`               |
+| Social Membership sessions, socials & trips photos  | `content/sessions.ts`                  |
 | FAQs                                                | `content/faqs.ts`                      |
 
 **Placeholders:** any text in `[square brackets]` shows on the site as a dashed "placeholder" tag, e.g. `"Gruia [Surname]"`. Replace it with the real details and delete the brackets, e.g. `"Gruia Popescu"`.
@@ -91,7 +91,7 @@ npm run build    # production build (run before pushing big changes)
 ```
 
 - Next.js 16 (App Router), TypeScript, Tailwind CSS 4, Framer Motion.
-- **Page transition:** `components/transition/`. Internal links use `TransitionLink`, which hands the click to `TransitionProvider`. That plays `BallOverlay`: a spinning volleyball appears where you clicked and grows into a purple circle (a CSS clip-path) that covers the screen; the page switches underneath; then the circle shrinks back into a ball that hops and drops out of view. About 0.6s in total (timings at the top of `BallOverlay.tsx`). Keyboard navigation starts it from the centre of the screen. It's a simple fade for users with "reduce motion" switched on, and it never plays on the first page load.
+- **Page transition:** `components/transition/`. Internal links use `TransitionLink`, which hands the click to `TransitionProvider`. That plays `BallOverlay`: a spinning volleyball appears where you clicked and grows into a purple circle (a CSS clip-path) that covers the screen; the page switches underneath; then the circle shrinks back into a ball that hops and drops out of view. About 1.2s in total (timings at the top of `BallOverlay.tsx`). Keyboard navigation starts it from the centre of the screen. It's a simple fade for users with "reduce motion" switched on, and it never plays on the first page load.
 - **Volleyball cursor:** `components/VolleyballCursor.tsx`. Only on devices with a mouse.
 - **Events** are filtered on each visit (not at build time), so past events drop off without a redeploy.
 - **Placeholders:** `components/Photo.tsx` checks at build time whether each photo exists in `public/images`.

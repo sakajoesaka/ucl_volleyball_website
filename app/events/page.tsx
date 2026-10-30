@@ -18,7 +18,11 @@ export const metadata = pageMetadata({
 export default function EventsPage() {
   return (
     <>
-      <PageHeader title="Upcoming Events" intro="Tournaments, socials and trips. Here's what's coming up." />
+      <PageHeader
+        backdrop="rings"
+        title="Upcoming Events"
+        intro="Tournaments, socials and trips. Here's what's coming up."
+      />
       <Container className="py-12 md:py-20">
         <Suspense fallback={<EventsSkeleton />}>
           <EventList />

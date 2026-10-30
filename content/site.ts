@@ -18,7 +18,8 @@ export const site = {
   // The feedback form on the home page sends messages here.
   contactEmail: "committee@example.com",
 
-  membershipName: "UCL Volleyball Membership",
+  // The main (non-team) membership, used across the site and the FAQs.
+  membershipName: "Social Membership",
   membershipPrice: "£80",
   memberCount: "200+",
   foundedYear: 1996,

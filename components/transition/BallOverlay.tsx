@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, type Transition } from "framer-motion";
+import { motion, type Easing } from "framer-motion";
 import { useId, useRef, useState, type SVGProps } from "react";
 
 // play:   a spinning volleyball appears where the user clicked and grows into a solid
@@ -18,16 +18,25 @@ export type OverlayProps = {
   onDone: () => void;
 };
 
-// Timings in seconds: about 0.3s to cover, about 0.3s to reveal.
-const COVER = 0.3;
-const SHRINK = 0.13;
-const DROP = 0.18;
+// Timings in seconds, about 1.2s in all. To cover: the ball pops in (POP), spins in place for a
+// moment (PAUSE), then grows smoothly over the screen (GROW). To reveal: it shrinks back (SHRINK),
+// then hops and drops out of view (DROP).
+const POP = 0.12;
+const PAUSE = 0.08;
+const GROW = 0.42;
+const SHRINK = 0.28;
+const DROP = 0.34;
+const COVER = POP + PAUSE + GROW;
 // Radius of the ball, in pixels, before it grows and after it shrinks back.
-const BALL_RADIUS = 14;
+const BALL_RADIUS = 16;
 
 const BRAND = "#4b1a7a";
-const growEase: Transition["ease"] = [0.55, 0, 0.8, 0.2];
-const shrinkEase: Transition["ease"] = [0.2, 0.8, 0.4, 1];
+// Gentle start and finish, so the circle doesn't rush at the viewer.
+const growEase: Easing = [0.65, 0, 0.35, 1];
+const shrinkEase: Easing = [0.4, 0, 0.2, 1];
+// Keyframe timing shared by the circle and the ball so their edges stay together.
+const coverTimes = [0, POP / COVER, (POP + PAUSE) / COVER, 1];
+const coverEase: Easing[] = ["easeOut", "linear", growEase];
 
 export default function BallOverlay(props: OverlayProps) {
   return props.reduced ? <FadeOverlay {...props} /> : <BallTransition {...props} />;
@@ -81,16 +90,19 @@ function BallTransition({ stage, origin, onCovered, onDone }: OverlayProps) {
       <motion.div
         className="absolute inset-0"
         style={{ backgroundColor: BRAND }}
-        initial={{ clipPath: circle(BALL_RADIUS), opacity: 1 }}
+        initial={{ clipPath: circle(0), opacity: 1 }}
         animate={
           revealing
             ? { clipPath: circle(BALL_RADIUS), opacity: 0 }
-            : { clipPath: circle(geo.radius), opacity: 1 }
+            : {
+                clipPath: [circle(0), circle(BALL_RADIUS), circle(BALL_RADIUS), circle(geo.radius)],
+                opacity: 1,
+              }
         }
         transition={
           revealing
             ? { clipPath: { duration: SHRINK, ease: shrinkEase }, opacity: { delay: SHRINK, duration: 0 } }
-            : { clipPath: { duration: COVER, ease: growEase } }
+            : { clipPath: { duration: COVER, times: coverTimes, ease: coverEase } }
         }
       />
 
@@ -104,25 +116,26 @@ function BallTransition({ stage, origin, onCovered, onDone }: OverlayProps) {
           width: geo.radius * 2,
           height: geo.radius * 2,
         }}
-        initial={{ scale: geo.ballScale, rotate: 0, opacity: 1, y: 0 }}
+        initial={{ scale: 0, rotate: 0, opacity: 1, y: 0 }}
         animate={
           revealing
-            ? { scale: geo.ballScale, rotate: 540, opacity: 1, y: [0, -BALL_RADIUS * 1.5, geo.fall] }
-            : { scale: 1, rotate: 240, opacity: [1, 1, 0], y: 0 }
+            ? { scale: geo.ballScale, rotate: 720, opacity: 1, y: [0, -BALL_RADIUS * 3, geo.fall] }
+            : { scale: [0, geo.ballScale, geo.ballScale, 1], rotate: 360, opacity: [1, 1, 1, 0] }
         }
         transition={
           revealing
             ? {
                 scale: { duration: SHRINK, ease: shrinkEase },
-                opacity: { duration: SHRINK * 0.6 },
+                opacity: { duration: SHRINK * 0.7 },
                 rotate: { duration: SHRINK + DROP, ease: "linear" },
-                // A small hop up, then a drop off the bottom of the screen.
-                y: { delay: SHRINK, duration: DROP, times: [0, 0.3, 1], ease: ["easeOut", "easeIn"] },
+                // A little hop up, then a drop off the bottom of the screen.
+                y: { delay: SHRINK, duration: DROP, times: [0, 0.35, 1], ease: ["easeOut", "easeIn"] },
               }
             : {
-                scale: { duration: COVER, ease: growEase },
-                rotate: { duration: COVER, ease: "easeIn" },
-                opacity: { duration: COVER, times: [0, 0.4, 1] },
+                scale: { duration: COVER, times: coverTimes, ease: coverEase },
+                rotate: { duration: COVER, ease: "linear" },
+                // The ball's seams fade away as it grows, leaving solid purple.
+                opacity: { duration: COVER, times: [0, (POP + PAUSE) / COVER, 0.7, 1] },
               }
         }
         onAnimationComplete={() => {

@@ -90,6 +90,12 @@ html.has-ball-cursor [contenteditable="true"] {
   }
 }
 
+@keyframes marquee {
+  to {
+    translate: -50% 0;
+  }
+}
+
 @keyframes bar-fill {
   from {
     width: 0;

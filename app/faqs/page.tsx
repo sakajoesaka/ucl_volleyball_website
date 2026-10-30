@@ -30,6 +30,7 @@ export default function FaqsPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }}
       />
       <PageHeader
+        backdrop="dots"
         title="Frequently Asked Questions"
         intro="Everything you need to know about joining and playing with UCL Volleyball."
       />
