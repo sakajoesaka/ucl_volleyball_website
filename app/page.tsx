@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { images, lifeAtTheClub } from "@/content/images";
 import { site } from "@/content/site";
 import { pageMetadata } from "@/lib/metadata";
@@ -6,6 +7,7 @@ import { BrandIcon } from "@/components/BrandIcon";
 import { Carousel } from "@/components/Carousel";
 import { CountUp } from "@/components/CountUp";
 import { FeedbackForm } from "@/components/FeedbackForm";
+import { GamesThisWeek, GamesThisWeekSkeleton } from "@/components/GamesThisWeek";
 import { ZoomOnScroll } from "@/components/ZoomOnScroll";
 import { ButtonLink, Container, Heading } from "@/components/ui";
 
@@ -131,6 +133,11 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* This week's matches and results (see content/games.ts) */}
+      <Suspense fallback={<GamesThisWeekSkeleton />}>
+        <GamesThisWeek />
+      </Suspense>
 
       {/* Life at the club: full-width slideshow (same background as the feedback section below) */}
       <section className="py-16 md:py-24">

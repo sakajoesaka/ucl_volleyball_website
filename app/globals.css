@@ -119,7 +119,21 @@ html.has-ball-cursor [contenteditable="true"] {
 /* Movember: progress blocks pop in, the moustache bobs, and the cursor wiggles. */
 @keyframes pixel-pop {
   from {
-    scale: 0;
+    opacity: 0;
+  }
+}
+
+/* Blocks in the Movember donation bar. Each is a whole number of pixels wide (any spare pixels
+   go at the ends), because fractional widths get rounded unevenly on phones and some blocks
+   end up looking thinner. --gaps is the total gap between the blocks; there are 20 blocks. */
+.pixel-block {
+  flex: 1 1 0;
+}
+
+@supports (width: round(down, 10.5px, 1px)) {
+  .pixel-block {
+    flex: none;
+    width: round(down, calc((100% - var(--gaps)) / 20), 1px);
   }
 }
 

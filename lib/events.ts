@@ -1,7 +1,7 @@
 import { events, type ClubEvent } from "@/content/events";
 
 // Today's date in London as "YYYY-MM-DD", whatever time zone the server runs in.
-function londonToday(): string {
+export function londonToday(): string {
   return new Intl.DateTimeFormat("en-CA", {
     timeZone: "Europe/London",
     year: "numeric",

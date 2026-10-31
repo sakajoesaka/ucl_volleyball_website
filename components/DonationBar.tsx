@@ -57,11 +57,11 @@ export function DonationBar({
               className="h-5 w-12 motion-safe:animate-[mo-bob_0.8s_steps(2)_infinite]"
             />
           </div>
-          <div className="flex gap-1 border-4 border-white p-1 sm:gap-1.5 sm:p-1.5">
+          <div className="flex justify-center gap-1 border-4 border-white p-1 [--gaps:76px] sm:gap-1.5 sm:p-1.5 sm:[--gaps:114px]">
             {Array.from({ length: BLOCKS }, (_, i) => (
               <span
                 key={i}
-                className={`h-6 flex-1 sm:h-8 md:h-10 ${
+                className={`pixel-block h-6 sm:h-8 md:h-10 ${
                   i < filled
                     ? "bg-mo-brown shadow-[inset_0_4px_0_var(--color-mo-tan),inset_0_-4px_0_#4a2a14] motion-safe:animate-[pixel-pop_160ms_steps(2)_both]"
                     : "bg-white/10"

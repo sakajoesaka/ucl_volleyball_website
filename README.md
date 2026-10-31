@@ -46,6 +46,23 @@ Open `content/events.ts` and copy an existing block, from `{` to `},`. Paste it 
 - If there are no upcoming events, the page says "No upcoming events right now — check the WhatsApp group".
 - **Delete the three example events** (marked `example: true`) before the site goes live.
 
+## Add a game or result
+
+Open `content/games.ts` and copy an existing block:
+
+```ts
+{
+  date: "2026-11-04",          // YYYY-MM-DD
+  time: "2–4pm",
+  team: "Women's 1st Team",
+  opponent: "King's W1",
+  venue: "Somers Town Leisure Centre",
+  score: [3, 1],               // add after the game, OUR sets first
+},
+```
+
+The Home page shows a Monday-to-Sunday calendar of the current week's games. It moves on to the new week by itself every Monday, so there's no need to delete old games. Leave out `score` for games that haven't been played yet. Once a score is added, the game shows "Won 3–1" (or "Lost") and counts towards the Played and Won totals.
+
 ## Swap in real photos
 
 1. Open `content/images.ts`. Each photo has a `src` (its file name), a `label` (what the grey placeholder says) and `alt` (a description for screen readers and Google).
