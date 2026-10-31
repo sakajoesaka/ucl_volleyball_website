@@ -1,13 +1,18 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { FINE_POINTER, useMediaQuery } from "@/lib/use-media-query";
+import { PixelMoustache } from "@/components/PixelMoustache";
 
 const INTERACTIVE =
   "a, button, summary, select, label, [role='button'], input[type='submit'], input[type='checkbox'], input[type='radio']";
 // Over these the normal text cursor shows instead, so typing and selecting stay precise.
 const TEXT_FIELD =
   "textarea, [contenteditable='true'], input:not([type='submit'], [type='button'], [type='checkbox'], [type='radio'])";
+
+// Pages where the cursor is a moustache instead of a volleyball.
+const MOUSTACHE_PAGES = ["/events/movember"];
 
 // Replaces the mouse pointer with a small volleyball. Touch devices never see it.
 export function VolleyballCursor() {
@@ -17,6 +22,12 @@ export function VolleyballCursor() {
 
 function BallCursor() {
   const ref = useRef<HTMLDivElement>(null);
+  const moustache = MOUSTACHE_PAGES.includes(usePathname());
+
+  // Set directly (not through className) so the classes the pointer handlers add are kept.
+  useEffect(() => {
+    ref.current?.classList.toggle("is-moustache", moustache);
+  }, [moustache]);
 
   useEffect(() => {
     const ball = ref.current;
@@ -52,8 +63,12 @@ function BallCursor() {
 
   return (
     <div ref={ref} className="ball-cursor" aria-hidden="true">
-      {/* eslint-disable-next-line @next/next/no-img-element -- tiny static SVG, no optimisation needed */}
-      <img src="/volleyball.svg" alt="" width={22} height={22} />
+      {moustache ? (
+        <PixelMoustache />
+      ) : (
+        // eslint-disable-next-line @next/next/no-img-element -- tiny static SVG, no optimisation needed
+        <img src="/volleyball.svg" alt="" width={22} height={22} />
+      )}
     </div>
   );
 }

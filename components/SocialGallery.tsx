@@ -34,12 +34,13 @@ export function SocialGallery({ names, panels }: { names: string[]; panels: Reac
   };
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[1fr_1.3fr] lg:items-start lg:gap-12">
+    <div className="grid gap-8 lg:grid-cols-[1fr_1.3fr] lg:items-start lg:gap-8">
+      {/* On computers the options line up on the right, next to the photo, and scatter leftwards. */}
       <div
         role="tablist"
         aria-label="Socials and trips"
         aria-orientation="vertical"
-        className="flex flex-wrap gap-x-3 gap-y-4 py-2 lg:flex-col lg:items-start lg:gap-5"
+        className="flex flex-wrap gap-x-3 gap-y-4 py-2 lg:flex-col lg:items-end lg:gap-5"
       >
         {names.map((name, i) => {
           const selected = i === active;
@@ -64,7 +65,7 @@ export function SocialGallery({ names, panels }: { names: string[]; panels: Reac
                   rotate: selected ? "0deg" : `${scatter[i % scatter.length].rotate}deg`,
                 } as CSSProperties
               }
-              className={`rounded-full px-5 py-2.5 text-left font-medium shadow-sm transition-[background-color,color,rotate,scale] duration-300 ease-[var(--ease-snap)] lg:translate-x-[var(--x)] lg:translate-y-[var(--y)] lg:px-6 lg:py-3 lg:text-lg ${
+              className={`rounded-full px-5 py-2.5 text-left font-medium shadow-sm transition-[background-color,color,rotate,scale] duration-300 ease-[var(--ease-snap)] lg:-translate-x-[var(--x)] lg:translate-y-[var(--y)] lg:px-6 lg:py-3 lg:text-lg ${
                 selected
                   ? "scale-105 bg-brand text-white"
                   : "bg-lilac-100 text-brand hover:scale-105 hover:bg-lilac-200"

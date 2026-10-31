@@ -46,7 +46,8 @@ export default function HomePage() {
         />
         <Container className="pt-28 pb-10 md:pb-20">
           <p className="text-lg font-semibold text-lilac-200 md:text-xl">We are</p>
-          <h1 className="heading mt-1 text-[clamp(2.25rem,11vw,7.5rem)] whitespace-nowrap text-white">
+          {/* The negative margin cancels the space built into the big "U", so it lines up with "We are". */}
+          <h1 className="heading mt-1 -ml-[0.065em] text-[clamp(2.25rem,11vw,7.5rem)] whitespace-nowrap text-white">
             UCL Volleyball
           </h1>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">

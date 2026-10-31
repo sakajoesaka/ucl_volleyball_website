@@ -5,16 +5,17 @@ Built with Next.js, hosted on Vercel.
 
 **All the text, events, photos and links live in the `content/` folder.** You never need to touch anything else to keep the site up to date. Edit the file, save, and push to GitHub. Vercel rebuilds the site automatically within a minute or two.
 
-| To change…                                          | Edit this file                         |
-| --------------------------------------------------- | -------------------------------------- |
-| Events                                              | `content/events.ts`                    |
-| Photos (and the Life at the Club slideshow)         | `content/images.ts` + `public/images/` |
-| Social media links                                  | `content/socials.ts`                   |
-| WhatsApp/SU links, price, member count, email       | `content/site.ts`                      |
-| Teams: achievements, descriptions, captains         | `content/achievements.ts`              |
-| Memberships slideshow (incl. each one's sessions)   | `content/memberships.ts`               |
-| Social Membership sessions, socials & trips photos  | `content/sessions.ts`                  |
-| FAQs                                                | `content/faqs.ts`                      |
+| To change…                                         | Edit this file                         |
+| -------------------------------------------------- | -------------------------------------- |
+| Events                                             | `content/events.ts`                    |
+| Photos (and the Life at the Club slideshow)        | `content/images.ts` + `public/images/` |
+| Social media links                                 | `content/socials.ts`                   |
+| WhatsApp/SU links, price, member count, email      | `content/site.ts`                      |
+| Teams: achievements, descriptions, captains        | `content/achievements.ts`              |
+| Memberships slideshow (incl. each one's sessions)  | `content/memberships.ts`               |
+| Social Membership sessions, socials & trips photos | `content/sessions.ts`                  |
+| FAQs                                               | `content/faqs.ts`                      |
+| Movember page (fundraising total, goal, links)     | `content/movember.ts`                  |
 
 **Placeholders:** any text in `[square brackets]` shows on the site as a dashed "placeholder" tag, e.g. `"Gruia [Surname]"`. Replace it with the real details and delete the brackets, e.g. `"Gruia Popescu"`.
 
@@ -61,6 +62,17 @@ To use a different file name, change the `src` in `content/images.ts` to match. 
 
 Open `content/achievements.ts`. Each team has its achievements, an `about` description (one string per paragraph) and its `captain` (name, course, email). These show when someone taps the team on the Our Legacy page. Once a captain's email is filled in, it becomes a clickable email link.
 
+## Update the Movember page
+
+Open `content/movember.ts`. As donations come in, change `raised` (and `goal` if it moves). Numbers only, in pounds, with no £ sign or commas:
+
+```ts
+goal: 1000,
+raised: 350,
+```
+
+The pixel bar on the Movember page updates itself. Once the figures are real, set `figuresArePlaceholders` to `false` to remove the "placeholder" note. Put the club's Movember team page in `donateUrl` so the Donate buttons go straight to it. When Movember is over, set `showOnEventsPage` to `false` to hide the banner on the Upcoming Events page.
+
 ## Change the social links
 
 Open `content/socials.ts`. Paste the full link between the quotes:
@@ -80,6 +92,7 @@ An icon only appears when its `url` is filled in. Set it back to `""` to hide it
 - [ ] Confirm the Men's 1st Team results in `content/achievements.ts` (1st and 2nd at the same 2025 BUCS Beach event).
 - [ ] Update `url` in `content/site.ts` once the site has its final web address (used for link previews and Google).
 - [ ] Replace the example events and placeholder photos.
+- [ ] Movember (`content/movember.ts`): the real goal and total, the club's team page link (`donateUrl`) and what the club is doing this year (`plans`).
 - [ ] Fill in the placeholders: team descriptions and captains (`content/achievements.ts`) and team memberships (`content/memberships.ts`).
 
 ## For developers

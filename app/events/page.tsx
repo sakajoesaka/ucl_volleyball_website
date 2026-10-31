@@ -1,12 +1,16 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
-import { CalendarDays, MapPin } from "lucide-react";
+import { ArrowRight, CalendarDays, MapPin } from "lucide-react";
 import type { ClubEvent } from "@/content/events";
+import { movember } from "@/content/movember";
 import { site } from "@/content/site";
 import { formatEventDate, getUpcomingEvents } from "@/lib/events";
+import { pixelFont } from "@/lib/fonts";
 import { pageMetadata } from "@/lib/metadata";
 import { BrandIcon } from "@/components/BrandIcon";
 import { Photo } from "@/components/Photo";
+import { PixelMoustache } from "@/components/PixelMoustache";
+import { TransitionLink } from "@/components/transition/TransitionLink";
 import { ButtonLink, Container, Heading, PageHeader } from "@/components/ui";
 
 export const metadata = pageMetadata({
@@ -24,11 +28,40 @@ export default function EventsPage() {
         intro="Tournaments, socials and trips. Here's what's coming up."
       />
       <Container className="py-12 md:py-20">
+        {movember.showOnEventsPage && <MovemberBanner />}
         <Suspense fallback={<EventsSkeleton />}>
           <EventList />
         </Suspense>
       </Container>
     </>
+  );
+}
+
+// Points to the Movember fundraiser page, in that page's black, brown and white.
+function MovemberBanner() {
+  return (
+    <section
+      aria-labelledby="movember-banner"
+      className="relative isolate mb-10 grid items-center gap-6 overflow-hidden border-4 border-mo-black bg-mo-black p-6 text-white shadow-[8px_8px_0_var(--color-mo-brown)] sm:grid-cols-[auto_1fr_auto] sm:gap-8 md:mb-14 md:p-8"
+    >
+      <PixelMoustache colour="#ffffff" highlight="#c08a5a" className="w-24 md:w-32" />
+      <div>
+        <p className={`${pixelFont.className} text-[0.65rem] leading-relaxed text-mo-tan sm:text-xs`}>
+          Movember {movember.year}
+        </p>
+        <Heading as="h2" size="md" id="movember-banner" className="mt-2">
+          We&apos;re Raising Money for Men&apos;s Health
+        </Heading>
+        <p className="mt-2 text-white/80">See how close we are to our goal, and how to get involved.</p>
+      </div>
+      <TransitionLink
+        href="/events/movember"
+        className="inline-flex min-h-12 items-center justify-center gap-2 self-start border-4 border-white bg-white px-6 py-3 font-semibold text-mo-black shadow-[4px_4px_0_var(--color-mo-brown)] transition-[translate,box-shadow] duration-100 hover:-translate-y-0.5 active:translate-x-1 active:translate-y-1 active:shadow-none sm:self-center"
+      >
+        Our Movember Page
+        <ArrowRight className="size-4" aria-hidden="true" />
+      </TransitionLink>
+    </section>
   );
 }
 

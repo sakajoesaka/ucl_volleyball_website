@@ -18,22 +18,34 @@ export function SessionsToggle({ sessions, note }: { sessions: Session[]; note?:
 
   return (
     <div className="rounded-2xl border border-white/20 bg-white/10">
+      {/* A solid lilac button with a pulsing "+" so it's obvious it opens. */}
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         aria-controls={panelId}
-        className="flex w-full items-center justify-between gap-4 rounded-2xl px-5 py-4 text-left font-semibold transition-colors hover:bg-white/10"
+        className="group flex w-full items-center justify-between gap-4 rounded-2xl bg-lilac px-5 py-4 text-left text-brand-950 shadow-[0_4px_0_var(--color-brand-950)] transition-[background-color,translate,box-shadow] duration-150 hover:bg-lilac-300 active:translate-y-1 active:shadow-none"
       >
         <span className="flex items-center gap-3">
-          <Clock className="size-5 text-lilac-200" aria-hidden="true" />
-          Session times &amp; locations
+          <Clock className="size-6 shrink-0" aria-hidden="true" />
+          <span>
+            <span className="block font-bold md:text-lg">Session times &amp; locations</span>
+            <span className="block text-sm font-medium text-brand-950">
+              {open ? "Hide the session times" : "See the days, times and venues"}
+            </span>
+          </span>
         </span>
-        <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-lilac text-brand-950">
+        <span className="relative flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-950 text-white transition-transform group-hover:scale-110">
+          {!open && (
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 rounded-full bg-brand-950/40 motion-safe:animate-ping"
+            />
+          )}
           {open ? (
-            <Minus className="size-4" aria-hidden="true" />
+            <Minus className="relative size-5" strokeWidth={3} aria-hidden="true" />
           ) : (
-            <Plus className="size-4" aria-hidden="true" />
+            <Plus className="relative size-5" strokeWidth={3} aria-hidden="true" />
           )}
         </span>
       </button>
@@ -46,7 +58,7 @@ export function SessionsToggle({ sessions, note }: { sessions: Session[]; note?:
         }`}
       >
         <div className="overflow-hidden">
-          <ul className="space-y-2 px-3 pb-3">
+          <ul className="space-y-2 px-3 pt-3 pb-3">
             {sessions.map((session, i) => (
               <li
                 key={i}

@@ -3,16 +3,18 @@
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
 import { images } from "@/content/images";
 import { navLinks, site } from "@/content/site";
 import { TransitionLink } from "@/components/transition/TransitionLink";
 import { ButtonLink, Circles } from "@/components/ui";
 import { BrandIcon } from "@/components/BrandIcon";
-import { SocialIcons } from "@/components/SocialIcons";
+import { activeSocials } from "@/content/socials";
 
 // No top bar: the logo floats at the top of the page and a round menu button stays
 // pinned to the corner, opening a full-screen menu. More of the screen for the page itself.
+const instagram = activeSocials.find((s) => s.platform === "instagram");
+
 export function Header() {
   const pathname = usePathname();
   // Remember which page the menu was opened on, so it closes itself after navigating.
@@ -76,9 +78,10 @@ export function Header() {
           aria-label="Main"
           className="mx-auto flex min-h-full max-w-6xl flex-col px-4 pt-28 pb-10 sm:px-6 md:pt-36 lg:px-8"
         >
-          <ul className="flex flex-col gap-1 md:gap-2">
+          {/* Each page is a light-blue pill with an arrow, so it reads as a link; the current page is filled in. */}
+          <ul className="flex flex-col items-start gap-2 md:gap-3">
             {navLinks.map((link, i) => {
-              const active = pathname === link.href;
+              const active = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
               return (
                 <li key={link.href}>
                   <TransitionLink
@@ -86,27 +89,45 @@ export function Header() {
                     href={link.href}
                     onClick={close}
                     aria-current={active ? "page" : undefined}
-                    className="heading group inline-flex items-center gap-4 py-1 text-[2.6rem] text-brand-950 transition-colors hover:text-brand sm:text-6xl md:text-7xl"
+                    className={`heading group -mx-3 inline-flex items-center gap-3 rounded-3xl px-3 py-1.5 text-[2.3rem] text-brand-950 transition-colors sm:text-6xl md:-mx-6 md:gap-5 md:rounded-full md:px-6 md:text-7xl ${
+                      active ? "bg-sky-200" : "hover:bg-sky-100"
+                    }`}
                   >
                     {link.label}
-                    {active && <span aria-hidden="true" className="size-3 rounded-full bg-brand md:size-4" />}
+                    {active ? (
+                      <span className="rounded-full bg-brand-950 px-3 py-1 font-sans text-xs font-semibold tracking-normal [word-spacing:normal] whitespace-nowrap text-white md:text-sm">
+                        You&apos;re here
+                      </span>
+                    ) : (
+                      <ArrowRight
+                        className="size-7 shrink-0 text-brand transition-transform group-hover:translate-x-1.5 md:size-12"
+                        strokeWidth={2.5}
+                        aria-hidden="true"
+                      />
+                    )}
                   </TransitionLink>
                 </li>
               );
             })}
           </ul>
-          <div className="mt-auto flex flex-col gap-6 pt-12 md:flex-row md:items-center md:justify-between">
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <ButtonLink href={site.joinUrl}>Join the Society</ButtonLink>
+          <div className="mt-auto flex flex-col gap-3 pt-12 sm:flex-row sm:flex-wrap">
+            <ButtonLink href={site.joinUrl}>Join the Society</ButtonLink>
+            <ButtonLink
+              href={site.whatsappUrl}
+              variant="light"
+              icon={<BrandIcon platform="whatsapp" className="size-5" />}
+            >
+              Join our WhatsApp
+            </ButtonLink>
+            {instagram && (
               <ButtonLink
-                href={site.whatsappUrl}
+                href={instagram.url}
                 variant="light"
-                icon={<BrandIcon platform="whatsapp" className="size-5" />}
+                icon={<BrandIcon platform="instagram" className="size-5" />}
               >
-                Join our WhatsApp
+                Follow our Instagram
               </ButtonLink>
-            </div>
-            <SocialIcons />
+            )}
           </div>
         </nav>
       </div>

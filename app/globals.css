@@ -20,6 +20,11 @@
   /* Background bands and the decorative circles on them. */
   --color-band: #d9bdf3;
   --color-blush: #f3b9ec;
+  /* Movember page only: black, brown and white. */
+  --color-mo-black: #15110e;
+  --color-mo-brown: #7a4a26;
+  --color-mo-tan: #c08a5a;
+  --color-mo-cream: #f7f2ec;
 
   --radius-card: 1.5rem;
 
@@ -105,6 +110,38 @@ html.has-ball-cursor [contenteditable="true"] {
   }
 }
 
+/* Movember: progress blocks pop in, the moustache bobs, and the cursor wiggles. */
+@keyframes pixel-pop {
+  from {
+    scale: 0;
+  }
+}
+
+@keyframes mo-bob {
+  50% {
+    translate: 0 -12%;
+  }
+}
+
+@keyframes mo-wiggle {
+  25% {
+    rotate: -12deg;
+  }
+  75% {
+    rotate: 12deg;
+  }
+}
+
+/* Notched corners, like a frame in an old video game. */
+.pixel-frame {
+  box-shadow:
+    0 -6px 0 0 var(--color-mo-black),
+    0 6px 0 0 var(--color-mo-black),
+    -6px 0 0 0 var(--color-mo-black),
+    6px 0 0 0 var(--color-mo-black),
+    12px 12px 0 0 var(--color-mo-brown);
+}
+
 @keyframes ball-spin {
   to {
     rotate: 360deg;
@@ -140,12 +177,37 @@ html.has-ball-cursor [contenteditable="true"] {
   animation: ball-spin 0.9s linear infinite;
 }
 
+/* On the Movember page the cursor is a moustache, outlined in white so it shows on any colour. */
+.ball-cursor.is-moustache {
+  width: 36px;
+  height: 13px;
+  margin: -6px 0 0 -18px;
+}
+
+.ball-cursor.is-moustache svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(1px 0 0 #fff) drop-shadow(-1px 0 0 #fff) drop-shadow(0 1px 0 #fff)
+    drop-shadow(0 -1px 0 #fff);
+  transition: scale 180ms var(--ease-snap);
+}
+
+.ball-cursor.is-moustache.is-hover svg {
+  scale: 1.3;
+  animation: mo-wiggle 0.5s steps(2) infinite;
+}
+
+.ball-cursor.is-moustache.is-down svg {
+  scale: 0.85;
+}
+
 .ball-cursor.is-down img {
   scale: 0.85;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ball-cursor.is-hover img {
+  .ball-cursor.is-hover img,
+  .ball-cursor.is-moustache.is-hover svg {
     animation: none;
   }
 }
