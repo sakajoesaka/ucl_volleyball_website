@@ -5,7 +5,7 @@ import { pageMetadata } from "@/lib/metadata";
 import { Photo } from "@/components/Photo";
 import { TeamCards } from "@/components/TeamCards";
 import { ZoomOnScroll } from "@/components/ZoomOnScroll";
-import { Container, Heading } from "@/components/ui";
+import { Container, Heading, SoftCircles } from "@/components/ui";
 
 export const metadata = pageMetadata({
   title: "Our Legacy",
@@ -48,7 +48,8 @@ export default function LegacyPage() {
         </Container>
       </section>
 
-      <section className="bg-white py-16 md:py-24">
+      <section className="relative isolate overflow-hidden bg-white py-16 md:py-24">
+        <SoftCircles layout="left" />
         <Container>
           <Heading className="text-brand">Achievements</Heading>
           <p className="mt-4 max-w-2xl text-lg text-muted">

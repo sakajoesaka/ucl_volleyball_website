@@ -8,7 +8,7 @@ import { pixelFont } from "@/lib/fonts/pixel";
 import { spookyFont } from "@/lib/fonts/spooky";
 import { pageMetadata } from "@/lib/metadata";
 import { Carousel } from "@/components/Carousel";
-import { PixelArt, bat, ghost, pumpkin } from "@/components/PixelArt";
+import { PixelArt, bat, ghost, moon, pumpkin } from "@/components/PixelArt";
 import { PixelButton } from "@/components/PixelButton";
 import { Photo } from "@/components/Photo";
 import { WithPlaceholders } from "@/components/Placeholder";
@@ -164,17 +164,13 @@ export default function HalloweenPage() {
   );
 }
 
-// A full moon with a soft glow and a few craters. Purely decorative.
+// A pixel full moon, to match the bats and pumpkins. Purely decorative.
 function Moon() {
   return (
-    <div
-      aria-hidden="true"
-      className="absolute -top-12 -right-12 -z-10 size-44 rounded-full bg-bone shadow-[0_0_120px_30px_rgba(245,236,215,0.18)] md:top-28 md:right-[8%] md:size-80"
-    >
-      <span className="absolute top-[22%] left-[28%] size-[18%] rounded-full bg-[#e4d8bd]" />
-      <span className="absolute top-[52%] left-[56%] size-[12%] rounded-full bg-[#e4d8bd]" />
-      <span className="absolute top-[64%] left-[24%] size-[8%] rounded-full bg-[#e4d8bd]" />
-    </div>
+    <PixelArt
+      sprite={moon}
+      className="absolute -top-12 -right-12 -z-10 size-48 drop-shadow-[0_0_40px_rgba(245,236,215,0.25)] md:top-24 md:right-[7%] md:size-80"
+    />
   );
 }
 

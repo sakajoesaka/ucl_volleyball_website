@@ -2,7 +2,7 @@ import { connection } from "next/server";
 import { Clock, MapPin } from "lucide-react";
 import type { Game } from "@/content/games";
 import { getThisWeek } from "@/lib/games";
-import { Container, Heading } from "@/components/ui";
+import { Container, Heading, SoftCircles } from "@/components/ui";
 
 // "Games This Week" on the Home page: a Monday-to-Sunday calendar of our matches, with results.
 // Works out the week on each visit, so it moves on by itself every Monday.
@@ -12,28 +12,20 @@ export async function GamesThisWeek() {
   const first = week[0];
   const last = week[6];
   const all = week.flatMap((day) => day.games);
-  const played = all.filter((game) => game.score);
-  const won = played.filter((game) => game.score && game.score[0] > game.score[1]);
 
   return (
-    <section aria-labelledby="games-this-week" className="bg-white py-16 md:py-24">
+    <section
+      aria-labelledby="games-this-week"
+      className="relative isolate overflow-hidden bg-white py-16 md:py-24"
+    >
+      <SoftCircles layout="corners" />
       <Container>
-        <div className="flex flex-wrap items-end justify-between gap-6">
-          <div>
-            <Heading id="games-this-week" className="text-brand">
-              Games This Week
-            </Heading>
-            <p className="mt-3 text-lg text-muted">
-              {first.weekday} {first.day} {first.month} – {last.weekday} {last.day} {last.month}
-            </p>
-          </div>
-          {played.length > 0 && (
-            <dl className="flex gap-3">
-              <Stat label="Played" value={played.length} />
-              <Stat label="Won" value={won.length} highlight />
-            </dl>
-          )}
-        </div>
+        <Heading id="games-this-week" className="text-brand">
+          Games This Week
+        </Heading>
+        <p className="mt-3 text-lg text-muted">
+          {first.weekday} {first.day} {first.month} – {last.weekday} {last.day} {last.month}
+        </p>
 
         {all.length === 0 ? (
           <p className="mt-10 rounded-[var(--radius-card)] border border-line bg-paper p-8 text-center text-lg text-muted">
@@ -91,8 +83,9 @@ function GameCard({ game }: { game: Game }) {
 
   return (
     <article className="rounded-xl bg-brand p-3 text-white">
-      <p className="text-xs font-semibold text-lilac-200">{game.team}</p>
-      <h3 className="mt-1 leading-snug font-semibold">vs {game.opponent}</h3>
+      {/* Our team is the headline; the opponent goes underneath. */}
+      <h3 className="heading text-lg leading-tight">{game.team}</h3>
+      <p className="mt-1 text-sm font-semibold text-lilac-200">vs {game.opponent}</p>
       <p className="mt-2 flex items-start gap-1.5 text-xs text-white/80">
         <Clock className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
         {game.time}
@@ -111,17 +104,6 @@ function GameCard({ game }: { game: Game }) {
         </p>
       )}
     </article>
-  );
-}
-
-function Stat({ label, value, highlight }: { label: string; value: number; highlight?: boolean }) {
-  return (
-    <div
-      className={`rounded-2xl px-5 py-3 text-center ${highlight ? "bg-brand text-white" : "bg-lilac-100 text-brand"}`}
-    >
-      <dt className="text-sm font-semibold opacity-80">{label}</dt>
-      <dd className="heading text-3xl">{value}</dd>
-    </div>
   );
 }
 

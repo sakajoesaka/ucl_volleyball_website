@@ -22,7 +22,16 @@ type Item = Pick<SocialEvent, "name" | "description" | "icon">;
 
 // The socials and trips, scattered like stickers. Choosing one swaps the photo,
 // which is shown as a taped-down polaroid with a caption.
-export function SocialGallery({ items, panels }: { items: Item[]; panels: ReactNode[] }) {
+// `intro` (the heading and text) sits above the options, so on computers it's beside the photo.
+export function SocialGallery({
+  intro,
+  items,
+  panels,
+}: {
+  intro: ReactNode;
+  items: Item[];
+  panels: ReactNode[];
+}) {
   const [active, setActive] = useState(0);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
   const current = items[active];
@@ -45,10 +54,11 @@ export function SocialGallery({ items, panels }: { items: Item[]; panels: ReactN
 
   return (
     <div className="grid gap-12 lg:grid-cols-[1fr_1.3fr] lg:items-center lg:gap-10">
-      <div className={chunkyFont.className}>
+      <div>
+        {intro}
         <p
           aria-hidden="true"
-          className="mb-4 flex -rotate-6 items-end justify-center gap-1 text-2xl text-lilac lg:mb-6 lg:justify-start"
+          className={`${chunkyFont.className} mt-10 mb-4 flex -rotate-6 items-end justify-center gap-1 text-2xl text-lilac lg:mb-6 lg:justify-start`}
         >
           Pick one!
           {/* A hand-drawn arrow curling down towards the options */}
@@ -62,7 +72,7 @@ export function SocialGallery({ items, panels }: { items: Item[]; panels: ReactN
           role="tablist"
           aria-label="Socials and trips"
           aria-orientation="vertical"
-          className="flex flex-wrap justify-center gap-x-3 gap-y-4 lg:flex-col lg:items-center lg:gap-5"
+          className={`${chunkyFont.className} flex flex-wrap justify-center gap-x-3 gap-y-4 lg:flex-col lg:items-center lg:gap-5`}
         >
           {items.map((item, i) => {
             const selected = i === active;

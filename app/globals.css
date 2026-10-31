@@ -123,17 +123,23 @@ html.has-ball-cursor [contenteditable="true"] {
   }
 }
 
-/* Blocks in the Movember donation bar. Each is a whole number of pixels wide (any spare pixels
-   go at the ends), because fractional widths get rounded unevenly on phones and some blocks
-   end up looking thinner. --gaps is the total gap between the blocks; there are 20 blocks. */
+/* The Movember donation bar. Each block is a whole number of pixels wide, because fractional
+   widths get rounded unevenly on phones and some blocks look thinner. The bar then shrinks to
+   fit its blocks exactly, so the gap at each end matches the gaps between blocks.
+   --frame is the bar's border and padding, --gaps the total gap between the 20 blocks. Widths
+   are worked out from the width of the progress bar around it (cqw), marked `@container`. */
 .pixel-block {
   flex: 1 1 0;
 }
 
-@supports (width: round(down, 10.5px, 1px)) {
+@supports (width: round(down, 1cqw, 1px)) {
+  .pixel-bar {
+    width: fit-content;
+  }
+
   .pixel-block {
     flex: none;
-    width: round(down, calc((100% - var(--gaps)) / 20), 1px);
+    width: round(down, calc((100cqw - var(--frame) - var(--gaps)) / 20), 1px);
   }
 }
 

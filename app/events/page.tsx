@@ -9,10 +9,10 @@ import { pixelFontLazy as pixelFont, spookyFontLazy as spookyFont } from "@/lib/
 import { pageMetadata } from "@/lib/metadata";
 import { BrandIcon } from "@/components/BrandIcon";
 import { Photo } from "@/components/Photo";
-import { PixelArt, moustache, pumpkin } from "@/components/PixelArt";
+import { PixelArt, moon, moustache, pumpkin } from "@/components/PixelArt";
 import { PixelButton } from "@/components/PixelButton";
 import { TransitionLink } from "@/components/transition/TransitionLink";
-import { ButtonLink, Container, Heading, PageHeader } from "@/components/ui";
+import { ButtonLink, Container, Heading, PageHeader, SoftCircles } from "@/components/ui";
 
 export const metadata = pageMetadata({
   title: "Upcoming Events",
@@ -48,7 +48,11 @@ async function PastEvents() {
   if (past.length === 0) return null;
 
   return (
-    <section aria-labelledby="past-events" className="bg-white py-16 md:py-24">
+    <section
+      aria-labelledby="past-events"
+      className="relative isolate overflow-hidden bg-white py-16 md:py-24"
+    >
+      <SoftCircles layout="scatter" />
       <Container>
         <Heading id="past-events" className="text-brand">
           Past Events
@@ -93,7 +97,7 @@ function HalloweenCard({ event }: { event: ClubEvent }) {
   const date = formatEventDate(event.date);
   return (
     <article className="relative isolate flex h-full flex-col overflow-hidden border-4 border-night bg-night p-6 text-bone shadow-[8px_8px_0_var(--color-pumpkin)]">
-      <div aria-hidden="true" className="absolute -top-10 -right-10 -z-10 size-36 rounded-full bg-bone/90" />
+      <PixelArt sprite={moon} className="absolute -top-10 -right-10 -z-10 size-40" />
       <div className="relative w-16">
         <span aria-hidden="true" className="absolute inset-[-30%] rounded-full bg-pumpkin/40 blur-xl" />
         <PixelArt sprite={pumpkin} className="relative w-full" />

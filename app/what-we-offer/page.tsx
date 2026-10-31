@@ -48,39 +48,41 @@ export default function OfferPage() {
           <div className="absolute top-[-8rem] right-[-8rem] size-[22rem] rounded-full bg-blush/40" />
         </div>
         <Container>
-          <Heading className="text-brand">Socials &amp; Trips</Heading>
-          <p className="mt-5 max-w-2xl text-lg text-muted">
-            Volleyball is only half of it. Your membership gets you into every social we run, all year. Pick
-            one to see what it&apos;s like.
-          </p>
-          <div className="mt-10">
-            <SocialGallery
-              items={socialEvents}
-              panels={socialEvents.map((event) =>
-                event.images.length > 1 ? (
-                  <Carousel
-                    key={event.name}
-                    label={`${event.name} photos`}
-                    slides={event.images.map((image) => (
-                      <Photo
-                        key={image.src}
-                        image={image}
-                        sizes="(min-width: 1024px) 640px, 100vw"
-                        className="aspect-[4/3] w-full"
-                      />
-                    ))}
-                  />
-                ) : (
-                  <Photo
-                    key={event.name}
-                    image={event.images[0]}
-                    sizes="(min-width: 1024px) 640px, 100vw"
-                    className="aspect-[4/3] w-full"
-                  />
-                ),
-              )}
-            />
-          </div>
+          <SocialGallery
+            intro={
+              <>
+                <Heading className="text-brand">Socials &amp; Trips</Heading>
+                <p className="mt-5 max-w-2xl text-lg text-muted">
+                  Volleyball is only half of it. Your membership gets you into every social we run, all year.
+                  Pick one to see what it&apos;s like.
+                </p>
+              </>
+            }
+            items={socialEvents}
+            panels={socialEvents.map((event) =>
+              event.images.length > 1 ? (
+                <Carousel
+                  key={event.name}
+                  label={`${event.name} photos`}
+                  slides={event.images.map((image) => (
+                    <Photo
+                      key={image.src}
+                      image={image}
+                      sizes="(min-width: 1024px) 640px, 100vw"
+                      className="aspect-[4/3] w-full"
+                    />
+                  ))}
+                />
+              ) : (
+                <Photo
+                  key={event.name}
+                  image={event.images[0]}
+                  sizes="(min-width: 1024px) 640px, 100vw"
+                  className="aspect-[4/3] w-full"
+                />
+              ),
+            )}
+          />
         </Container>
       </section>
 

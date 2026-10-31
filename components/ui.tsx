@@ -48,6 +48,36 @@ export function Circles({ className = "" }: { className?: string }) {
   );
 }
 
+// Soft circles in the club colours behind otherwise plain white sections. Purely decorative.
+// The section needs `relative isolate overflow-hidden`. Pick a different layout for each section.
+const softCircleLayouts = {
+  corners: [
+    "-top-32 -right-32 size-[26rem] bg-lilac-100",
+    "-bottom-28 -left-28 size-[20rem] bg-blush/35",
+    "top-1/2 right-[8%] hidden size-24 bg-band/40 lg:block",
+  ],
+  left: [
+    "top-[18%] -left-40 size-[24rem] bg-band/30",
+    "-top-16 right-[12%] size-40 border-[2.5rem] border-lilac-100",
+    "-right-20 -bottom-20 size-64 bg-blush/30",
+  ],
+  scatter: [
+    "-top-24 left-[30%] size-72 bg-blush/30",
+    "-right-24 bottom-[10%] size-[22rem] bg-lilac-100",
+    "bottom-[-6rem] left-[-4rem] size-56 border-[2rem] border-band/40",
+  ],
+};
+
+export function SoftCircles({ layout }: { layout: keyof typeof softCircleLayouts }) {
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+      {softCircleLayouts[layout].map((circle) => (
+        <div key={circle} className={`absolute rounded-full ${circle}`} />
+      ))}
+    </div>
+  );
+}
+
 // Each page's title band gets its own backdrop, all in the same palette.
 const backdrops = {
   // Overlapping arcs rising from the bottom right.
