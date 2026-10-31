@@ -6,9 +6,11 @@
 // - featured: true puts it in the "Next Big Event" box (the soonest featured one is shown)
 // - image:    optional poster or photo, e.g. image: { src: "/images/boat-ball-poster.jpg", alt: "...", label: "" }
 //             (save the file in public/images). Without one, a purple date graphic is shown.
+// - page:     optional link to the event's own page, e.g. "/events/halloween"
+// - look:     optional themed design for its card in Past Events (currently only "halloween")
 //
-// Events disappear from the site automatically the day after their date,
-// so there's no need to delete old ones (but you can).
+// The day after its date, an event moves from Upcoming Events to the Past Events archive
+// further down the same page. Delete it from this list to remove it from the archive too.
 
 import type { SiteImage } from "./images";
 
@@ -20,11 +22,24 @@ export type ClubEvent = {
   description: string;
   featured?: boolean;
   image?: SiteImage;
+  page?: string;
+  look?: "halloween";
   // Shows an "Example" tag on the site. Remove the line for real events.
   example?: boolean;
 };
 
 export const events: ClubEvent[] = [
+  {
+    // TODO: check the date, time and venue of the Halloween social.
+    date: "2026-10-29",
+    time: "[Time]",
+    title: "Halloween Social",
+    location: "[Venue]",
+    description: "Costumes, spooky drinks and a costume competition.",
+    page: "/events/halloween",
+    look: "halloween",
+  },
+
   // ---- EXAMPLE EVENTS: delete these three and add real ones. ----
   {
     date: "2026-11-12",

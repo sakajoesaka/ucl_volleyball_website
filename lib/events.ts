@@ -16,6 +16,12 @@ export function getUpcomingEvents(): ClubEvent[] {
   return events.filter((event) => event.date >= today).sort((a, b) => a.date.localeCompare(b.date));
 }
 
+// Events before today, most recent first.
+export function getPastEvents(): ClubEvent[] {
+  const today = londonToday();
+  return events.filter((event) => event.date < today).sort((a, b) => b.date.localeCompare(a.date));
+}
+
 const toDate = (isoDate: string) => {
   const [year, month, day] = isoDate.split("-").map(Number);
   return new Date(Date.UTC(year, month - 1, day));

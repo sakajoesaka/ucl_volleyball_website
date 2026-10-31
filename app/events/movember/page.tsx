@@ -1,10 +1,10 @@
-import type { ReactNode } from "react";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { movember } from "@/content/movember";
-import { pixelFont } from "@/lib/fonts";
+import { pixelFont } from "@/lib/fonts/pixel";
 import { pageMetadata } from "@/lib/metadata";
 import { DonationBar } from "@/components/DonationBar";
-import { PixelMoustache } from "@/components/PixelMoustache";
+import { PixelButton } from "@/components/PixelButton";
+import { PixelArt, moustache } from "@/components/PixelArt";
 import { WithPlaceholders } from "@/components/Placeholder";
 import { TransitionLink } from "@/components/transition/TransitionLink";
 import { Container, Heading } from "@/components/ui";
@@ -65,9 +65,8 @@ export default function MovemberPage() {
               </PixelButton>
             </div>
           </div>
-          <PixelMoustache
-            colour="#ffffff"
-            highlight="#c08a5a"
+          <PixelArt
+            sprite={moustache("#ffffff", "#c08a5a")}
             className="mx-auto w-3/4 max-w-sm motion-safe:animate-[mo-bob_1.2s_steps(2)_infinite] md:w-full"
           />
         </Container>
@@ -126,36 +125,6 @@ export default function MovemberPage() {
         </Container>
       </section>
     </div>
-  );
-}
-
-const pixelButtonVariants = {
-  light: "border-mo-black bg-white text-mo-black shadow-[4px_4px_0_var(--color-mo-brown)]",
-  dark: "border-mo-black bg-mo-black text-white shadow-[4px_4px_0_var(--color-mo-brown)]",
-  outline: "border-white text-white shadow-[4px_4px_0_var(--color-mo-brown)] hover:bg-white/10",
-};
-
-// Square, chunky buttons that press down when clicked, to match the game look.
-function PixelButton({
-  href,
-  variant,
-  children,
-}: {
-  href: string;
-  variant: keyof typeof pixelButtonVariants;
-  children: ReactNode;
-}) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`inline-flex min-h-12 items-center justify-center gap-2 self-start border-4 px-6 py-3 font-semibold transition-[translate,box-shadow] duration-100 hover:-translate-y-0.5 active:translate-x-1 active:translate-y-1 active:shadow-none ${pixelButtonVariants[variant]}`}
-    >
-      {children}
-      <ArrowUpRight className="size-4 opacity-70" aria-hidden="true" />
-      <span className="sr-only">(opens in a new tab)</span>
-    </a>
   );
 }
 

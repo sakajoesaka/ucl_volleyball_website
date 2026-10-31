@@ -14,6 +14,20 @@ type CarouselProps = {
   bars?: "overlay" | "below";
   className?: string;
   controlsClassName?: string;
+  // Colours for the previous/next buttons.
+  theme?: keyof typeof controlThemes;
+};
+
+const controlThemes = {
+  brand: {
+    prev: "rounded-full border-2 border-brand/15 text-brand hover:border-brand hover:bg-white",
+    next: "rounded-full bg-brand text-white hover:bg-brand-800",
+  },
+  // Square, on a dark background, for the Halloween page.
+  halloween: {
+    prev: "border-2 border-bone/40 text-bone hover:border-bone hover:bg-white/5",
+    next: "bg-pumpkin text-night hover:bg-candle",
+  },
 };
 
 // Lets something inside a slide know whether its slide is the one showing,
@@ -29,6 +43,7 @@ export function Carousel({
   bars = "below",
   className = "",
   controlsClassName = "",
+  theme = "brand",
 }: CarouselProps) {
   const track = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
@@ -160,7 +175,7 @@ export function Carousel({
             <button
               type="button"
               onClick={() => goTo(index - 1)}
-              className="flex size-11 items-center justify-center rounded-full border-2 border-brand/15 text-brand transition-colors hover:border-brand hover:bg-white"
+              className={`flex size-11 items-center justify-center transition-colors ${controlThemes[theme].prev}`}
             >
               <ChevronLeft className="size-5" aria-hidden="true" />
               <span className="sr-only">Previous slide</span>
@@ -168,7 +183,7 @@ export function Carousel({
             <button
               type="button"
               onClick={() => goTo(index + 1)}
-              className="flex size-11 items-center justify-center rounded-full bg-brand text-white transition-colors hover:bg-brand-800"
+              className={`flex size-11 items-center justify-center transition-colors ${controlThemes[theme].next}`}
             >
               <ChevronRight className="size-5" aria-hidden="true" />
               <span className="sr-only">Next slide</span>

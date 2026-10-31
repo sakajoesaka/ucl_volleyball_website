@@ -4,12 +4,13 @@ import { ArrowRight, CalendarDays, MapPin } from "lucide-react";
 import type { ClubEvent } from "@/content/events";
 import { movember } from "@/content/movember";
 import { site } from "@/content/site";
-import { formatEventDate, getUpcomingEvents } from "@/lib/events";
-import { pixelFont } from "@/lib/fonts";
+import { formatEventDate, getPastEvents, getUpcomingEvents } from "@/lib/events";
+import { pixelFontLazy as pixelFont, spookyFontLazy as spookyFont } from "@/lib/fonts/lazy";
 import { pageMetadata } from "@/lib/metadata";
 import { BrandIcon } from "@/components/BrandIcon";
 import { Photo } from "@/components/Photo";
-import { PixelMoustache } from "@/components/PixelMoustache";
+import { PixelArt, moustache, pumpkin } from "@/components/PixelArt";
+import { PixelButton } from "@/components/PixelButton";
 import { TransitionLink } from "@/components/transition/TransitionLink";
 import { ButtonLink, Container, Heading, PageHeader } from "@/components/ui";
 
@@ -33,7 +34,83 @@ export default function EventsPage() {
           <EventList />
         </Suspense>
       </Container>
+      <Suspense fallback={null}>
+        <PastEvents />
+      </Suspense>
     </>
+  );
+}
+
+// The archive: events whose date has passed, most recent first. Hidden when there are none.
+async function PastEvents() {
+  await connection();
+  const past = getPastEvents();
+  if (past.length === 0) return null;
+
+  return (
+    <section aria-labelledby="past-events" className="bg-white py-16 md:py-24">
+      <Container>
+        <Heading id="past-events" className="text-brand">
+          Past Events
+        </Heading>
+        <p className="mt-4 max-w-2xl text-lg text-muted">Catch up on what you missed.</p>
+        <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {past.map((event) => (
+            <li key={`${event.date}-${event.title}`}>
+              {event.look === "halloween" ? <HalloweenCard event={event} /> : <PastEventCard event={event} />}
+            </li>
+          ))}
+        </ul>
+      </Container>
+    </section>
+  );
+}
+
+function PastEventCard({ event }: { event: ClubEvent }) {
+  const date = formatEventDate(event.date);
+  return (
+    <article className="flex h-full flex-col rounded-[var(--radius-card)] border border-line bg-paper p-6">
+      <time dateTime={event.date} className="text-sm font-semibold text-muted">
+        {date.weekday} {date.day} {date.month} {date.year}
+      </time>
+      <Heading as="h3" size="md" className="mt-2 text-ink">
+        {event.title}
+      </Heading>
+      <p className="mt-3 text-muted">{event.description}</p>
+      {event.page && (
+        <div className="mt-auto pt-5">
+          <ButtonLink href={event.page} variant="outline" size="sm">
+            See More
+          </ButtonLink>
+        </div>
+      )}
+    </article>
+  );
+}
+
+// An archive card in the Halloween page's look: night sky, glowing pumpkin, spooky lettering.
+function HalloweenCard({ event }: { event: ClubEvent }) {
+  const date = formatEventDate(event.date);
+  return (
+    <article className="relative isolate flex h-full flex-col overflow-hidden border-4 border-night bg-night p-6 text-bone shadow-[8px_8px_0_var(--color-pumpkin)]">
+      <div aria-hidden="true" className="absolute -top-10 -right-10 -z-10 size-36 rounded-full bg-bone/90" />
+      <div className="relative w-16">
+        <span aria-hidden="true" className="absolute inset-[-30%] rounded-full bg-pumpkin/40 blur-xl" />
+        <PixelArt sprite={pumpkin} className="relative w-full" />
+      </div>
+      <time dateTime={event.date} className={`${pixelFont.className} mt-6 text-[0.65rem] text-pumpkin`}>
+        {date.weekday} {date.day} {date.month} {date.year}
+      </time>
+      <h3 className={`${spookyFont.className} mt-3 text-4xl leading-none text-pumpkin`}>{event.title}</h3>
+      <p className="mt-3 text-bone/80">{event.description}</p>
+      {event.page && (
+        <div className="mt-auto pt-6">
+          <PixelButton href={event.page} variant="pumpkin">
+            See the Photos
+          </PixelButton>
+        </div>
+      )}
+    </article>
   );
 }
 
@@ -44,7 +121,7 @@ function MovemberBanner() {
       aria-labelledby="movember-banner"
       className="relative isolate mb-10 grid items-center gap-6 overflow-hidden border-4 border-mo-black bg-mo-black p-6 text-white shadow-[8px_8px_0_var(--color-mo-brown)] sm:grid-cols-[auto_1fr_auto] sm:gap-8 md:mb-14 md:p-8"
     >
-      <PixelMoustache colour="#ffffff" highlight="#c08a5a" className="w-24 md:w-32" />
+      <PixelArt sprite={moustache("#ffffff", "#c08a5a")} className="w-24 md:w-32" />
       <div>
         <p className={`${pixelFont.className} text-[0.65rem] leading-relaxed text-mo-tan sm:text-xs`}>
           Movember {movember.year}

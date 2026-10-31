@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { FINE_POINTER, useMediaQuery } from "@/lib/use-media-query";
-import { PixelMoustache } from "@/components/PixelMoustache";
+import { PixelArt, moustache, pumpkin, type Sprite } from "@/components/PixelArt";
 
 const INTERACTIVE =
   "a, button, summary, select, label, [role='button'], input[type='submit'], input[type='checkbox'], input[type='radio']";
@@ -11,8 +11,11 @@ const INTERACTIVE =
 const TEXT_FIELD =
   "textarea, [contenteditable='true'], input:not([type='submit'], [type='button'], [type='checkbox'], [type='radio'])";
 
-// Pages where the cursor is a moustache instead of a volleyball.
-const MOUSTACHE_PAGES = ["/events/movember"];
+// Themed pages where the cursor is a pixel picture instead of a volleyball, with its size in pixels.
+const PAGE_CURSORS: Record<string, { sprite: Sprite; width: number; height: number }> = {
+  "/events/movember": { sprite: moustache(), width: 36, height: 13 },
+  "/events/halloween": { sprite: pumpkin, width: 26, height: 24 },
+};
 
 // Replaces the mouse pointer with a small volleyball. Touch devices never see it.
 export function VolleyballCursor() {
@@ -22,12 +25,17 @@ export function VolleyballCursor() {
 
 function BallCursor() {
   const ref = useRef<HTMLDivElement>(null);
-  const moustache = MOUSTACHE_PAGES.includes(usePathname());
+  const themed = PAGE_CURSORS[usePathname()];
 
-  // Set directly (not through className) so the classes the pointer handlers add are kept.
+  // Set directly (not through className or style) so the classes and position the pointer
+  // handlers set are kept.
   useEffect(() => {
-    ref.current?.classList.toggle("is-moustache", moustache);
-  }, [moustache]);
+    const cursor = ref.current;
+    if (!cursor) return;
+    cursor.classList.toggle("is-sprite", !!themed);
+    cursor.style.setProperty("--sprite-w", themed ? `${themed.width}px` : "");
+    cursor.style.setProperty("--sprite-h", themed ? `${themed.height}px` : "");
+  }, [themed]);
 
   useEffect(() => {
     const ball = ref.current;
@@ -63,8 +71,8 @@ function BallCursor() {
 
   return (
     <div ref={ref} className="ball-cursor" aria-hidden="true">
-      {moustache ? (
-        <PixelMoustache />
+      {themed ? (
+        <PixelArt sprite={themed.sprite} />
       ) : (
         // eslint-disable-next-line @next/next/no-img-element -- tiny static SVG, no optimisation needed
         <img src="/volleyball.svg" alt="" width={22} height={22} />

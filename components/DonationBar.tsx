@@ -1,5 +1,5 @@
-import { pixelFont } from "@/lib/fonts";
-import { PixelMoustache } from "@/components/PixelMoustache";
+import { pixelFont } from "@/lib/fonts/pixel";
+import { PixelArt, moustache } from "@/components/PixelArt";
 
 const BLOCKS = 20;
 const pounds = new Intl.NumberFormat("en-GB", {
@@ -52,9 +52,8 @@ export function DonationBar({
             className="absolute bottom-full mb-2 -translate-x-1/2"
             style={{ left: `clamp(1.5rem, ${percent}%, calc(100% - 1.5rem))` }}
           >
-            <PixelMoustache
-              colour="#ffffff"
-              highlight="#c08a5a"
+            <PixelArt
+              sprite={moustache("#ffffff", "#c08a5a")}
               className="h-5 w-12 motion-safe:animate-[mo-bob_0.8s_steps(2)_infinite]"
             />
           </div>

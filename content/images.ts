@@ -84,6 +84,27 @@ export const images = {
     alt: "UCL Volleyball members dressed up at the annual Boat Ball",
     label: "Boat Ball photo",
   },
+  // Halloween social photos (the slideshow on the Halloween page)
+  halloweenCostumes: {
+    src: "/images/halloween-costumes.jpg",
+    alt: "UCL Volleyball members in Halloween costumes",
+    label: "Halloween: costumes group photo",
+  },
+  halloweenParty: {
+    src: "/images/halloween-party.jpg",
+    alt: "UCL Volleyball members at the Halloween social",
+    label: "Halloween: the party",
+  },
+  halloweenWinners: {
+    src: "/images/halloween-winners.jpg",
+    alt: "The costume competition winners at the Halloween social",
+    label: "Halloween: costume winners",
+  },
+  halloweenNight: {
+    src: "/images/halloween-night.jpg",
+    alt: "UCL Volleyball members out on Halloween night",
+    label: "Halloween: later in the night",
+  },
   logo: {
     src: "/images/logo.png",
     alt: "UCL Volleyball Society logo",

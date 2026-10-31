@@ -40,7 +40,13 @@ export default function OfferPage() {
       </section>
 
       {/* Socials & trips */}
-      <section className="bg-white py-16 md:py-24">
+      <section className="relative isolate overflow-hidden bg-white py-16 md:py-24">
+        {/* A dotted "table top" with a couple of soft circles behind the photo and options */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-[radial-gradient(var(--color-lilac-200)_1.5px,transparent_1.5px)] [background-size:22px_22px] opacity-70" />
+          <div className="absolute bottom-[-12rem] left-[-10rem] size-[28rem] rounded-full bg-lilac-100" />
+          <div className="absolute top-[-8rem] right-[-8rem] size-[22rem] rounded-full bg-blush/40" />
+        </div>
         <Container>
           <Heading className="text-brand">Socials &amp; Trips</Heading>
           <p className="mt-5 max-w-2xl text-lg text-muted">
@@ -49,7 +55,7 @@ export default function OfferPage() {
           </p>
           <div className="mt-10">
             <SocialGallery
-              names={socialEvents.map((event) => event.name)}
+              items={socialEvents}
               panels={socialEvents.map((event) =>
                 event.images.length > 1 ? (
                   <Carousel

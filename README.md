@@ -16,6 +16,7 @@ Built with Next.js, hosted on Vercel.
 | Social Membership sessions, socials & trips photos | `content/sessions.ts`                  |
 | FAQs                                               | `content/faqs.ts`                      |
 | Movember page (fundraising total, goal, links)     | `content/movember.ts`                  |
+| Halloween page (photos, costume winners)           | `content/halloween.ts`                 |
 
 **Placeholders:** any text in `[square brackets]` shows on the site as a dashed "placeholder" tag, e.g. `"Gruia [Surname]"`. Replace it with the real details and delete the brackets, e.g. `"Gruia Popescu"`.
 
@@ -38,7 +39,8 @@ Open `content/events.ts` and copy an existing block, from `{` to `},`. Paste it 
 },
 ```
 
-- Events disappear by themselves the day after their date, so you don't need to delete old ones.
+- The day after its date, an event moves by itself from Upcoming Events to the **Past Events** archive lower down the same page. Delete it from the list to remove it from the archive too.
+- To link an event to its own page (like the Halloween social), add `page: "/events/halloween",`. Its archive card then gets a button to that page.
 - If several events have `featured: true`, the soonest one goes in the "Next Big Event" box.
 - To show a poster or photo on an event's card, save it in `public/images/` and add `image: { src: "/images/your-poster.jpg", alt: "Describe the poster", label: "" },`. Without one, the card shows a purple date graphic.
 - If there are no upcoming events, the page says "No upcoming events right now — check the WhatsApp group".
@@ -56,11 +58,19 @@ To use a different file name, change the `src` in `content/images.ts` to match. 
 
 **Life at the Club slideshow (Home page):** the list at the bottom of `content/images.ts` sets which photos appear and in what order.
 
-**Socials & trips photos (What We Offer page):** in `content/sessions.ts`, each social has an `images` list. Add more photos to it and that social shows a mini slideshow when picked.
+**Socials & trips photos (What We Offer page):** in `content/sessions.ts`, each social has an `images` list. Add more photos to it and that social shows a mini slideshow when picked. Each one also has a short `description` (shown under the photo) and an `icon` (`"sun"`, `"ship"`, `"trophy"`, `"beer"` or `"mic"`).
 
 ## Update team details
 
 Open `content/achievements.ts`. Each team has its achievements, an `about` description (one string per paragraph) and its `captain` (name, course, email). These show when someone taps the team on the Our Legacy page. Once a captain's email is filled in, it becomes a clickable email link.
+
+## Update the Halloween page
+
+Open `content/halloween.ts`:
+
+- **Photos:** the slideshow uses four photos. Save them in `public/images/` as `halloween-costumes.jpg`, `halloween-party.jpg`, `halloween-winners.jpg` and `halloween-night.jpg` (or change the names in `content/images.ts`). To add more, add entries in `content/images.ts` and list them in `photos`.
+- **Costume winners:** fill in the names and costumes in `awards`.
+- **Date, time and venue:** these come from the Halloween entry in `content/events.ts`.
 
 ## Update the Movember page
 
@@ -92,6 +102,7 @@ An icon only appears when its `url` is filled in. Set it back to `""` to hide it
 - [ ] Confirm the Men's 1st Team results in `content/achievements.ts` (1st and 2nd at the same 2025 BUCS Beach event).
 - [ ] Update `url` in `content/site.ts` once the site has its final web address (used for link previews and Google).
 - [ ] Replace the example events and placeholder photos.
+- [ ] Halloween: check the date in `content/events.ts`, and add the photos, the costume winners and a line about the night (`content/halloween.ts`).
 - [ ] Movember (`content/movember.ts`): the real goal and total, the club's team page link (`donateUrl`) and what the club is doing this year (`plans`).
 - [ ] Fill in the placeholders: team descriptions and captains (`content/achievements.ts`) and team memberships (`content/memberships.ts`).
 

@@ -25,6 +25,12 @@
   --color-mo-brown: #7a4a26;
   --color-mo-tan: #c08a5a;
   --color-mo-cream: #f7f2ec;
+  /* Halloween page only. */
+  --color-night: #120b1a;
+  --color-night-2: #1f1430;
+  --color-pumpkin: #ff7a1a;
+  --color-candle: #ffd23f;
+  --color-bone: #f5ecd7;
 
   --radius-card: 1.5rem;
 
@@ -132,6 +138,37 @@ html.has-ball-cursor [contenteditable="true"] {
   }
 }
 
+/* Halloween: bats flap and fly across, pumpkins flicker, the "press start" text blinks. */
+@keyframes bat-flap {
+  50% {
+    scale: 1 0.55;
+  }
+}
+
+@keyframes bat-fly {
+  from {
+    translate: -20vw 0;
+  }
+  50% {
+    translate: 50vw -3rem;
+  }
+  to {
+    translate: 120vw 1rem;
+  }
+}
+
+@keyframes flicker {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
 /* Notched corners, like a frame in an old video game. */
 .pixel-frame {
   box-shadow:
@@ -177,14 +214,15 @@ html.has-ball-cursor [contenteditable="true"] {
   animation: ball-spin 0.9s linear infinite;
 }
 
-/* On the Movember page the cursor is a moustache, outlined in white so it shows on any colour. */
-.ball-cursor.is-moustache {
-  width: 36px;
-  height: 13px;
-  margin: -6px 0 0 -18px;
+/* On themed event pages the cursor is a pixel picture (see VolleyballCursor), outlined in
+   white so it shows on any colour. */
+.ball-cursor.is-sprite {
+  width: var(--sprite-w);
+  height: var(--sprite-h);
+  margin: calc(var(--sprite-h) / -2) 0 0 calc(var(--sprite-w) / -2);
 }
 
-.ball-cursor.is-moustache svg {
+.ball-cursor.is-sprite svg {
   width: 100%;
   height: 100%;
   filter: drop-shadow(1px 0 0 #fff) drop-shadow(-1px 0 0 #fff) drop-shadow(0 1px 0 #fff)
@@ -192,12 +230,12 @@ html.has-ball-cursor [contenteditable="true"] {
   transition: scale 180ms var(--ease-snap);
 }
 
-.ball-cursor.is-moustache.is-hover svg {
+.ball-cursor.is-sprite.is-hover svg {
   scale: 1.3;
   animation: mo-wiggle 0.5s steps(2) infinite;
 }
 
-.ball-cursor.is-moustache.is-down svg {
+.ball-cursor.is-sprite.is-down svg {
   scale: 0.85;
 }
 
@@ -207,7 +245,7 @@ html.has-ball-cursor [contenteditable="true"] {
 
 @media (prefers-reduced-motion: reduce) {
   .ball-cursor.is-hover img,
-  .ball-cursor.is-moustache.is-hover svg {
+  .ball-cursor.is-sprite.is-hover svg {
     animation: none;
   }
 }
