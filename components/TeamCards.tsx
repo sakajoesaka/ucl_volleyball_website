@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { ArrowRight, Mail, Medal, Trophy, X } from "lucide-react";
-import type { Team } from "@/content/achievements";
+import type { Captain, Team } from "@/content/achievements";
+import { BrandIcon } from "@/components/BrandIcon";
 import { WithPlaceholders, hasPlaceholder } from "@/components/Placeholder";
 
 type TeamCardsProps = {
@@ -98,9 +99,8 @@ function AchievementList({ items }: { items: Team["achievements"] }) {
 
 function TeamPanel({ team, photo, onClose }: { team: Team; photo: ReactNode; onClose: () => void }) {
   const closeButton = useRef<HTMLButtonElement>(null);
-  const { captain } = team;
-  const showNotice = hasPlaceholder(...team.about, captain.name, captain.course, captain.email);
-  const emailIsReal = !hasPlaceholder(captain.email);
+  const { captains } = team;
+  const showNotice = hasPlaceholder(...team.about, ...captains.flatMap((c) => [c.name, c.course, c.email]));
 
   // While open: focus the panel, close on Escape, and stop the page behind from scrolling or being tabbed to.
   useEffect(() => {
@@ -159,38 +159,26 @@ function TeamPanel({ team, photo, onClose }: { team: Team; photo: ReactNode; onC
             ))}
           </div>
 
+          {team.instagram && (
+            <a
+              href={`https://www.instagram.com/${team.instagram}/`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-2 font-semibold text-brand underline decoration-lilac decoration-2 underline-offset-4"
+            >
+              <BrandIcon platform="instagram" className="size-4" />@{team.instagram}
+            </a>
+          )}
+
           <div className="mt-8 rounded-2xl border border-line bg-white p-5 sm:p-6">
-            <h3 className="font-semibold text-ink">Team Captain</h3>
-            <dl className="mt-4 grid gap-x-6 gap-y-3 sm:grid-cols-[7rem_1fr]">
-              <dt className="text-sm text-muted sm:pt-0.5">Name</dt>
-              <dd className="font-semibold text-ink">
-                <WithPlaceholders text={captain.name} />
-              </dd>
-              <dt className="text-sm text-muted sm:pt-0.5">Studies</dt>
-              <dd className="text-ink">
-                <WithPlaceholders text={captain.course} />
-              </dd>
-              {captain.position && (
-                <>
-                  <dt className="text-sm text-muted sm:pt-0.5">Position</dt>
-                  <dd className="text-ink">{captain.position}</dd>
-                </>
-              )}
-              <dt className="text-sm text-muted sm:pt-0.5">Contact</dt>
-              <dd className="text-ink">
-                {emailIsReal ? (
-                  <a
-                    href={`mailto:${captain.email}`}
-                    className="inline-flex items-center gap-2 font-semibold text-brand underline decoration-lilac decoration-2 underline-offset-4"
-                  >
-                    <Mail className="size-4" aria-hidden="true" />
-                    {captain.email}
-                  </a>
-                ) : (
-                  <WithPlaceholders text={captain.email} />
-                )}
-              </dd>
-            </dl>
+            <h3 className="font-semibold text-ink">
+              {captains.length > 1 ? "Team Captains" : "Team Captain"}
+            </h3>
+            <div className="divide-y divide-line">
+              {captains.map((captain) => (
+                <CaptainDetails key={captain.name} captain={captain} />
+              ))}
+            </div>
           </div>
 
           <h3 className="mt-8 font-semibold text-ink">Achievements</h3>
@@ -199,5 +187,42 @@ function TeamPanel({ team, photo, onClose }: { team: Team; photo: ReactNode; onC
       </div>
     </div>,
     document.body,
+  );
+}
+
+function CaptainDetails({ captain }: { captain: Captain }) {
+  const emailIsReal = !hasPlaceholder(captain.email);
+
+  return (
+    <dl className="grid gap-x-6 gap-y-3 py-5 first:pt-4 last:pb-0 sm:grid-cols-[7rem_1fr]">
+      <dt className="text-sm text-muted sm:pt-0.5">Name</dt>
+      <dd className="font-semibold text-ink">
+        <WithPlaceholders text={captain.name} />
+      </dd>
+      <dt className="text-sm text-muted sm:pt-0.5">Studies</dt>
+      <dd className="text-ink">
+        <WithPlaceholders text={captain.course} />
+      </dd>
+      {captain.position && (
+        <>
+          <dt className="text-sm text-muted sm:pt-0.5">Position</dt>
+          <dd className="text-ink">{captain.position}</dd>
+        </>
+      )}
+      <dt className="text-sm text-muted sm:pt-0.5">Contact</dt>
+      <dd className="text-ink">
+        {emailIsReal ? (
+          <a
+            href={`mailto:${captain.email}`}
+            className="inline-flex items-center gap-2 font-semibold break-all text-brand underline decoration-lilac decoration-2 underline-offset-4"
+          >
+            <Mail className="size-4 shrink-0" aria-hidden="true" />
+            {captain.email}
+          </a>
+        ) : (
+          <WithPlaceholders text={captain.email} />
+        )}
+      </dd>
+    </dl>
   );
 }

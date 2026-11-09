@@ -51,8 +51,8 @@ export const images = {
   },
   mixedTeam: {
     src: "/images/mixed-team.jpg",
-    alt: "The UCL mixed team in a huddle",
-    label: "Mixed team huddle",
+    alt: "The UCL mixed team posing together on court in purple and pale blue kit",
+    label: "Mixed team photo",
   },
   beachTrip: {
     src: "/images/beach-trip.jpg",
