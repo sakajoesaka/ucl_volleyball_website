@@ -30,6 +30,7 @@ export const site = {
 export const navLinks = [
   { href: "/", label: "Home" },
   { href: "/our-legacy", label: "Our Legacy" },
+  { href: "/committee", label: "Committee" },
   { href: "/what-we-offer", label: "What We Offer" },
   { href: "/events", label: "Upcoming Events" },
   { href: "/faqs", label: "FAQs" },

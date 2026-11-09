@@ -170,6 +170,12 @@ function TeamPanel({ team, photo, onClose }: { team: Team; photo: ReactNode; onC
               <dd className="text-ink">
                 <WithPlaceholders text={captain.course} />
               </dd>
+              {captain.position && (
+                <>
+                  <dt className="text-sm text-muted sm:pt-0.5">Position</dt>
+                  <dd className="text-ink">{captain.position}</dd>
+                </>
+              )}
               <dt className="text-sm text-muted sm:pt-0.5">Contact</dt>
               <dd className="text-ink">
                 {emailIsReal ? (

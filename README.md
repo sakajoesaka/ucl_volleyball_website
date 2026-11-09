@@ -1,6 +1,6 @@
 # UCL Volleyball Society Website
 
-The club website: Home, Our Legacy, What We Offer, Upcoming Events and FAQs.
+The club website: Home, Our Legacy, Committee, What We Offer, Upcoming Events and FAQs.
 Built with Next.js, hosted on Vercel.
 
 **All the text, events, photos and links live in the `content/` folder.** You never need to touch anything else to keep the site up to date. Edit the file, save, and push to GitHub. Vercel rebuilds the site automatically within a minute or two.
@@ -12,6 +12,7 @@ Built with Next.js, hosted on Vercel.
 | Social media links                                 | `content/socials.ts`                   |
 | WhatsApp/SU links, price, member count, email      | `content/site.ts`                      |
 | Teams: achievements, descriptions, captains        | `content/achievements.ts`              |
+| Committee page: names, roles, courses, photos      | `content/committee.ts`                 |
 | Memberships slideshow (incl. each one's sessions)  | `content/memberships.ts`               |
 | Social Membership sessions, socials & trips photos | `content/sessions.ts`                  |
 | FAQs                                               | `content/faqs.ts`                      |
@@ -45,6 +46,23 @@ Open `content/events.ts` and copy an existing block, from `{` to `},`. Paste it 
 - To show a poster or photo on an event's card, save it in `public/images/` and add `image: { src: "/images/your-poster.jpg", alt: "Describe the poster", label: "" },`. Without one, the card shows a purple date graphic.
 - If there are no upcoming events, the page says "No upcoming events right now — check the WhatsApp group".
 - **Delete the three example events** (marked `example: true`) before the site goes live.
+
+## Add a committee member
+
+Open `content/committee.ts` and copy an existing block:
+
+```ts
+{
+  name: "Full Name",
+  role: "Treasurer",
+  year: "2nd year",
+  course: "Course name",
+  position: "Setter",          // optional: delete the line if they don't play a position
+  image: photo("full-name", "Full Name"),
+},
+```
+
+Members show in the order they appear. To add someone's picture, save it as `public/images/committee/full-name.jpg`, matching the name given to `photo(...)`. Until then, the card shows a "Photo coming soon" box.
 
 ## Add a game or result
 

@@ -16,6 +16,7 @@ export type Team = {
   captain: {
     name: string;
     course: string;
+    position?: string;
     email: string;
   };
 };
@@ -36,8 +37,9 @@ export const teams: Team[] = [
       "[Placeholder: league, training schedule and how trials work.]",
     ],
     captain: {
-      name: "Gruia [Surname]",
-      course: "[Course and year]",
+      name: "Gruia Natasta",
+      course: "Psychology, 2nd year",
+      position: "Outside Hitter",
       email: "[Captain's email]",
     },
   },
@@ -47,7 +49,12 @@ export const teams: Team[] = [
     summary: "Competes in BUCS Division 3 South and is the development pathway into the 1st team.",
     achievements: [{ text: "Just missed out on promotion in their first season" }],
     about: ["[Placeholder: a longer description of the team, its league, training and trials.]"],
-    captain: { name: "[Captain's name]", course: "[Course and year]", email: "[Captain's email]" },
+    captain: {
+      name: "Maayan Biran",
+      course: "Mathematics with Physics, 3rd year",
+      position: "Middle Blocker",
+      email: "[Captain's email]",
+    },
   },
   {
     name: "Women's 1st Team",
@@ -58,7 +65,12 @@ export const teams: Team[] = [
       { text: "Regular top-3 finishes in BUCS South Premier and the National Trophy" },
     ],
     about: ["[Placeholder: a longer description of the team, its league, training and trials.]"],
-    captain: { name: "[Captain's name]", course: "[Course and year]", email: "[Captain's email]" },
+    captain: {
+      name: "Brooke Tluchak",
+      course: "Arts and Sciences, 2nd year",
+      position: "Middle Blocker",
+      email: "[Captain's email]",
+    },
   },
   {
     name: "Women's 2nd Team",
@@ -67,7 +79,12 @@ export const teams: Team[] = [
       { text: "Won promotion out of their BUCS division in their first ever season", title: true },
     ],
     about: ["[Placeholder: a longer description of the team, its league, training and trials.]"],
-    captain: { name: "[Captain's name]", course: "[Course and year]", email: "[Captain's email]" },
+    captain: {
+      name: "Ekaterina Komarova",
+      course: "Media, 3rd year",
+      position: "Opposite Hitter",
+      email: "[Captain's email]",
+    },
   },
   {
     name: "Mixed Team",
