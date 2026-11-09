@@ -18,6 +18,8 @@ export type Team = {
   image: SiteImage;
   summary?: string;
   achievements: { text: string; title?: boolean }[];
+  // The leagues and cups the team plays in, shown as boxes when the card is opened.
+  competitions?: string[];
   // The longer description shown when the card is opened. One string per paragraph.
   about: string[];
   // The team's own Instagram username, without the @.
@@ -103,10 +105,8 @@ export const teams: Team[] = [
     name: "Mixed Team",
     image: images.mixedTeam,
     achievements: [{ text: "LUSL Mixed League Champions 2024", title: true }],
-    about: [
-      "Plays in the LUSL Prem League and the LUSL Cup.",
-      "Go check out our Instagram for match memes and to see our team!",
-    ],
+    competitions: ["LUSL Prem League", "LUSL Cup"],
+    about: ["Go check out our Instagram for match memes and to see our team!"],
     instagram: "ucl.mixed.volleyball",
     captains: [
       {

@@ -53,7 +53,7 @@ export function DonationBar({
             style={{ left: `clamp(1.5rem, ${percent}%, calc(100% - 1.5rem))` }}
           >
             <PixelArt
-              sprite={moustache("#ffffff", "#c08a5a")}
+              sprite={moustache("#ffffff")}
               className="h-5 w-12 motion-safe:animate-[mo-bob_0.8s_steps(2)_infinite]"
             />
           </div>

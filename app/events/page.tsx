@@ -125,7 +125,7 @@ function MovemberBanner() {
       aria-labelledby="movember-banner"
       className="relative isolate mb-10 grid items-center gap-6 overflow-hidden border-4 border-mo-black bg-mo-black p-6 text-white shadow-[8px_8px_0_var(--color-mo-brown)] sm:grid-cols-[auto_1fr_auto] sm:gap-8 md:mb-14 md:p-8"
     >
-      <PixelArt sprite={moustache("#ffffff", "#c08a5a")} className="w-24 md:w-32" />
+      <PixelArt sprite={moustache("#ffffff")} className="w-24 md:w-32" />
       <div>
         <p className={`${pixelFont.className} text-[0.65rem] leading-relaxed text-mo-tan sm:text-xs`}>
           Movember {movember.year}

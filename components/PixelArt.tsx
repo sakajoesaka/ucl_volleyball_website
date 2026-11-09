@@ -7,17 +7,17 @@ export type Sprite = { rows: string[]; palette: Record<string, string> };
 const mirror = (half: string[]) => half.map((row) => row + [...row].reverse().join(""));
 
 // Handlebar moustache, for Movember.
-export const moustache = (colour = "#2b1a12", highlight = "#7a4a26"): Sprite => ({
+export const moustache = (colour = "#2b1a12"): Sprite => ({
   rows: mirror([
     "##........",
     "#.......##",
-    "#....##ooo",
+    "#....#####",
     "##.#######",
     ".#########",
     "..######..",
     "....###...",
   ]),
-  palette: { "#": colour, o: highlight },
+  palette: { "#": colour },
 });
 
 // Jack-o'-lantern, for Halloween.

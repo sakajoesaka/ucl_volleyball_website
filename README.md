@@ -116,7 +116,7 @@ goal: 1000,
 raised: 350,
 ```
 
-The pixel bar on the Movember page updates itself. Once the figures are real, set `figuresArePlaceholders` to `false` to remove the "placeholder" note. Put the club's Movember team page in `donateUrl` so the Donate buttons go straight to it. When Movember is over, set `showOnEventsPage` to `false` to hide the banner on the Upcoming Events page.
+The pixel bar on the Movember page updates itself. Once the figures are real, set `figuresArePlaceholders` to `false` to remove the "placeholder" note. Put the club's Movember team page in `donateUrl` so the Donate buttons go straight to it. The fundraising goals are in `milestones` and the dates are in `calendar`. When Movember is over, set `showOnEventsPage` to `false` to hide the banner on the Upcoming Events page.
 
 ## Change the social links
 
@@ -138,7 +138,7 @@ An icon only appears when its `url` is filled in. Set it back to `""` to hide it
 - [ ] Update `url` in `content/site.ts` once the site has its final web address (used for link previews and Google).
 - [ ] Replace the example events and placeholder photos.
 - [ ] Halloween: check the date in `content/events.ts`, and add the photos, the costume winners and a line about the night (`content/halloween.ts`).
-- [ ] Movember (`content/movember.ts`): the real goal and total, the club's team page link (`donateUrl`) and what the club is doing this year (`plans`).
+- [ ] Movember (`content/movember.ts`): the real total and the club's team page link (`donateUrl`).
 - [ ] Fill in the placeholders: team descriptions and captains (`content/achievements.ts`) and team memberships (`content/memberships.ts`).
 
 ## For developers

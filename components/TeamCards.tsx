@@ -151,6 +151,19 @@ function TeamPanel({ team, photo, onClose }: { team: Team; photo: ReactNode; onC
             </p>
           )}
 
+          {team.competitions && (
+            <ul className="mt-5 flex flex-wrap gap-2">
+              {team.competitions.map((competition) => (
+                <li
+                  key={competition}
+                  className="rounded-lg bg-lilac-100 px-3 py-1.5 text-sm font-semibold text-brand"
+                >
+                  {competition}
+                </li>
+              ))}
+            </ul>
+          )}
+
           <div className="mt-5 space-y-4 text-lg text-ink/85">
             {team.about.map((paragraph) => (
               <p key={paragraph}>
