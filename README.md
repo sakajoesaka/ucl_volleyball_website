@@ -61,7 +61,7 @@ Open `content/committee.ts` and copy an existing block:
 },
 ```
 
-Members show in the order they appear. To add someone's picture, save it as `public/images/committee/full-name.jpg`, matching the name given to `photo(...)`. Until then, the card shows a "Photo coming soon" box. To make a card clickable, give it `extras`, as the existing members have. The photo in its pop-up is `public/images/committee/full-name-panel.jpg`. Captains come from each team in `content/achievements.ts`; their extras are in `captainExtras`.
+Members show in the order they appear. To add someone's picture, save it as `public/images/committee/full-name.jpg`, matching the name given to `photo(...)`. Until then, the card shows a "Photo coming soon" box. Every card opens a pop-up with the same photo. To add more to it, give the person `extras`, as the existing members have. Captains come from each team in `content/achievements.ts`; their extras are in `captainExtras`.
 
 ## Add a game or result
 

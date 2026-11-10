@@ -8,7 +8,7 @@ import type { SiteImage } from "./images";
 //   Replace it with the real details (and delete the brackets) when you have them.
 // - Photos: save each one as public/images/committee/<file>.jpg, using the name
 //   given to photo() below. Until the file exists, the card shows a grey box.
-// - `extras` is what appears when the card is clicked. Anyone without it gets a plain card.
+// - Clicking a card opens a panel with their photo and details. `extras` adds more to it.
 
 export type MemberExtras = {
   tagline?: string;
@@ -30,12 +30,6 @@ const photo = (file: string, name: string): SiteImage => ({
   src: `/images/committee/${file}.jpg`,
   alt: `Portrait of ${name}`,
   label: "Photo coming soon",
-});
-
-// The photo at the top of a clicked card's panel: <file>-panel.jpg, next to their card photo.
-export const panelPhoto = (member: CommitteeMember): SiteImage => ({
-  ...member.image,
-  src: member.image.src.replace(/\.jpg$/, "-panel.jpg"),
 });
 
 const favourites = (meal: string, song: string, player: string, talent: string) => [
