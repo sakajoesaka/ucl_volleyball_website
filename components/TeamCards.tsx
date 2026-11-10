@@ -1,10 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import { createPortal } from "react-dom";
-import { ArrowRight, Mail, Medal, Trophy, X } from "lucide-react";
+import type { ReactNode } from "react";
+import { ArrowRight, Mail, Medal, Trophy } from "lucide-react";
 import type { Captain, Team } from "@/content/achievements";
 import { BrandIcon } from "@/components/BrandIcon";
+import { DetailPanel, useDetailPanel } from "@/components/DetailPanel";
 import { WithPlaceholders, hasPlaceholder } from "@/components/Placeholder";
 
 type TeamCardsProps = {
@@ -15,20 +15,7 @@ type TeamCardsProps = {
 };
 
 export function TeamCards({ teams, cardPhotos, panelPhotos }: TeamCardsProps) {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const triggers = useRef<(HTMLButtonElement | null)[]>([]);
-  const lastOpened = useRef<number | null>(null);
-
-  const close = useCallback(() => setOpenIndex(null), []);
-
-  // Once the panel has closed (and the page is interactive again), return focus to its card.
-  useEffect(() => {
-    if (openIndex !== null) lastOpened.current = openIndex;
-    else if (lastOpened.current !== null) {
-      triggers.current[lastOpened.current]?.focus();
-      lastOpened.current = null;
-    }
-  }, [openIndex]);
+  const { openIndex, open, close, triggers } = useDetailPanel();
 
   return (
     <>
@@ -47,7 +34,7 @@ export function TeamCards({ teams, cardPhotos, panelPhotos }: TeamCardsProps) {
                     triggers.current[i] = el;
                   }}
                   type="button"
-                  onClick={() => setOpenIndex(i)}
+                  onClick={() => open(i)}
                   aria-haspopup="dialog"
                   className="text-left after:absolute after:inset-0 after:content-['']"
                 >
@@ -98,108 +85,69 @@ function AchievementList({ items }: { items: Team["achievements"] }) {
 }
 
 function TeamPanel({ team, photo, onClose }: { team: Team; photo: ReactNode; onClose: () => void }) {
-  const closeButton = useRef<HTMLButtonElement>(null);
   const { captains } = team;
   const showNotice = hasPlaceholder(...team.about, ...captains.flatMap((c) => [c.name, c.course, c.email]));
 
-  // While open: focus the panel, close on Escape, and stop the page behind from scrolling or being tabbed to.
-  useEffect(() => {
-    closeButton.current?.focus();
-    const background = document.querySelectorAll<HTMLElement>("#site-nav, #main, body > footer");
-    background.forEach((el) => (el.inert = true));
-    document.body.style.overflow = "hidden";
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKey);
-    return () => {
-      background.forEach((el) => (el.inert = false));
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", onKey);
-    };
-  }, [onClose]);
+  return (
+    <DetailPanel labelledBy="team-panel-title" onClose={onClose}>
+      {photo}
 
-  return createPortal(
-    <div
-      className="fixed inset-0 z-[120] flex items-end justify-center bg-brand-950/70 p-0 backdrop-blur-sm motion-safe:animate-[fade-in_200ms_ease-out] sm:items-center sm:p-6"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
-    >
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="team-panel-title"
-        className="relative max-h-[92svh] w-full max-w-2xl overflow-y-auto rounded-t-[var(--radius-card)] bg-paper shadow-2xl motion-safe:animate-[panel-in_280ms_var(--ease-snap)] sm:rounded-[var(--radius-card)]"
-      >
-        <button
-          ref={closeButton}
-          type="button"
-          onClick={onClose}
-          className="absolute top-4 right-4 z-10 flex size-11 items-center justify-center rounded-full bg-white/90 text-brand shadow-md transition-colors hover:bg-white"
-        >
-          <X className="size-5" aria-hidden="true" />
-          <span className="sr-only">Close</span>
-        </button>
+      <div className="p-6 sm:p-8">
+        <h2 id="team-panel-title" className="heading text-3xl text-brand md:text-4xl">
+          {team.name}
+        </h2>
 
-        {photo}
+        {showNotice && (
+          <p className="mt-4 rounded-xl border border-dashed border-muted/40 bg-white px-4 py-3 text-sm text-muted">
+            Details in dashed boxes are placeholders and will be added soon.
+          </p>
+        )}
 
-        <div className="p-6 sm:p-8">
-          <h2 id="team-panel-title" className="heading text-3xl text-brand md:text-4xl">
-            {team.name}
-          </h2>
+        {team.competitions && (
+          <ul className="mt-5 flex flex-wrap gap-2">
+            {team.competitions.map((competition) => (
+              <li
+                key={competition}
+                className="rounded-lg bg-lilac-100 px-3 py-1.5 text-sm font-semibold text-brand"
+              >
+                {competition}
+              </li>
+            ))}
+          </ul>
+        )}
 
-          {showNotice && (
-            <p className="mt-4 rounded-xl border border-dashed border-muted/40 bg-white px-4 py-3 text-sm text-muted">
-              Details in dashed boxes are placeholders and will be added soon.
+        <div className="mt-5 space-y-4 text-lg text-ink/85">
+          {team.about.map((paragraph) => (
+            <p key={paragraph}>
+              <WithPlaceholders text={paragraph} />
             </p>
-          )}
+          ))}
+        </div>
 
-          {team.competitions && (
-            <ul className="mt-5 flex flex-wrap gap-2">
-              {team.competitions.map((competition) => (
-                <li
-                  key={competition}
-                  className="rounded-lg bg-lilac-100 px-3 py-1.5 text-sm font-semibold text-brand"
-                >
-                  {competition}
-                </li>
-              ))}
-            </ul>
-          )}
+        {team.instagram && (
+          <a
+            href={`https://www.instagram.com/${team.instagram}/`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 inline-flex items-center gap-2 font-semibold text-brand underline decoration-lilac decoration-2 underline-offset-4"
+          >
+            <BrandIcon platform="instagram" className="size-4" />@{team.instagram}
+          </a>
+        )}
 
-          <div className="mt-5 space-y-4 text-lg text-ink/85">
-            {team.about.map((paragraph) => (
-              <p key={paragraph}>
-                <WithPlaceholders text={paragraph} />
-              </p>
+        <div className="mt-8 rounded-2xl border border-line bg-white p-5 sm:p-6">
+          <h3 className="font-semibold text-ink">{captains.length > 1 ? "Team Captains" : "Team Captain"}</h3>
+          <div className="divide-y divide-line">
+            {captains.map((captain) => (
+              <CaptainDetails key={captain.name} captain={captain} />
             ))}
           </div>
-
-          {team.instagram && (
-            <a
-              href={`https://www.instagram.com/${team.instagram}/`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-2 font-semibold text-brand underline decoration-lilac decoration-2 underline-offset-4"
-            >
-              <BrandIcon platform="instagram" className="size-4" />@{team.instagram}
-            </a>
-          )}
-
-          <div className="mt-8 rounded-2xl border border-line bg-white p-5 sm:p-6">
-            <h3 className="font-semibold text-ink">
-              {captains.length > 1 ? "Team Captains" : "Team Captain"}
-            </h3>
-            <div className="divide-y divide-line">
-              {captains.map((captain) => (
-                <CaptainDetails key={captain.name} captain={captain} />
-              ))}
-            </div>
-          </div>
-
-          <h3 className="mt-8 font-semibold text-ink">Achievements</h3>
-          <AchievementList items={team.achievements} />
         </div>
+
+        <h3 className="mt-8 font-semibold text-ink">Achievements</h3>
+        <AchievementList items={team.achievements} />
       </div>
-    </div>,
-    document.body,
+    </DetailPanel>
   );
 }
 
