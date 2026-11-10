@@ -1,4 +1,4 @@
-import { captains, committee, type CommitteeMember } from "@/content/committee";
+import { captains, committee, panelPhoto, type CommitteeMember } from "@/content/committee";
 import { pageMetadata } from "@/lib/metadata";
 import { CommitteeCards } from "@/components/CommitteeCards";
 import { Photo } from "@/components/Photo";
@@ -34,6 +34,14 @@ function MemberCards({ members }: { members: CommitteeMember[] }) {
           image={member.image}
           sizes="(min-width: 1024px) 270px, (min-width: 640px) 50vw, 100vw"
           className="aspect-[4/5]"
+        />
+      ))}
+      panelPhotos={members.map((member) => (
+        <Photo
+          key={member.image.src}
+          image={panelPhoto(member)}
+          sizes="(min-width: 640px) 512px, 100vw"
+          className="aspect-[16/9] sm:aspect-[2/1]"
         />
       ))}
     />

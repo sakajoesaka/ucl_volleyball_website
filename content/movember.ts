@@ -11,7 +11,7 @@ export const movember = {
   // Fundraising progress in pounds. Update these as donations come in.
   // TODO: replace the placeholder total with the real one.
   goal: 1000,
-  raised: 350,
+  raised: 0,
   // Set to false once the figures above are real, to remove the "placeholder" note.
   figuresArePlaceholders: true,
 

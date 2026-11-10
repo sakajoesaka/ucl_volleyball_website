@@ -7,7 +7,16 @@ import { DetailPanel, useDetailPanel } from "@/components/DetailPanel";
 import { WithPlaceholders } from "@/components/Placeholder";
 
 // Cards open a panel of extra details. Anyone without `extras` yet gets a plain card.
-export function CommitteeCards({ members, photos }: { members: CommitteeMember[]; photos: ReactNode[] }) {
+export function CommitteeCards({
+  members,
+  photos,
+  panelPhotos,
+}: {
+  members: CommitteeMember[];
+  // Photos are rendered on the server (so placeholders work) and passed in.
+  photos: ReactNode[];
+  panelPhotos: ReactNode[];
+}) {
   const { openIndex, open, close, triggers } = useDetailPanel();
 
   return (
@@ -70,19 +79,30 @@ export function CommitteeCards({ members, photos }: { members: CommitteeMember[]
         ))}
       </ul>
 
-      {openIndex !== null && <MemberPanel member={members[openIndex]} onClose={close} />}
+      {openIndex !== null && (
+        <MemberPanel member={members[openIndex]} photo={panelPhotos[openIndex]} onClose={close} />
+      )}
     </>
   );
 }
 
-function MemberPanel({ member, onClose }: { member: CommitteeMember; onClose: () => void }) {
+function MemberPanel({
+  member,
+  photo,
+  onClose,
+}: {
+  member: CommitteeMember;
+  photo: ReactNode;
+  onClose: () => void;
+}) {
   const { tagline, quote, favourites } = member.extras ?? {};
 
   return (
     <DetailPanel labelledBy="member-panel-title" onClose={onClose} className="max-w-lg">
+      {photo}
       <div className="p-6 sm:p-8">
-        <p className="pr-12 text-sm font-semibold text-brand">{member.role}</p>
-        <h2 id="member-panel-title" className="heading mt-2 pr-12 text-3xl text-ink md:text-4xl">
+        <p className="text-sm font-semibold text-brand">{member.role}</p>
+        <h2 id="member-panel-title" className="heading mt-2 text-3xl text-ink md:text-4xl">
           {member.name}
         </h2>
         <p className="mt-3 text-muted">

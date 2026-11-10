@@ -32,6 +32,12 @@ const photo = (file: string, name: string): SiteImage => ({
   label: "Photo coming soon",
 });
 
+// The photo at the top of a clicked card's panel: <file>-panel.jpg, next to their card photo.
+export const panelPhoto = (member: CommitteeMember): SiteImage => ({
+  ...member.image,
+  src: member.image.src.replace(/\.jpg$/, "-panel.jpg"),
+});
+
 const favourites = (meal: string, song: string, player: string, talent: string) => [
   { label: "Pre-game meal", value: meal },
   { label: "Go-to karaoke song", value: song },
@@ -191,6 +197,14 @@ export const committee: CommitteeMember[] = [
 
 // What appears when a captain's card is clicked. Use the name exactly as it's written in achievements.ts.
 const captainExtras: Record<string, MemberExtras> = {
+  "Joe Michael Sakamura Sissons": {
+    favourites: favourites(
+      "Rice",
+      "Titanium – Sia",
+      "Akihiro Yamauchi",
+      "I can do a Joe from Family Guy voice impression",
+    ),
+  },
   "Ekaterina Komarova": {
     tagline: "Not Kat-ching anyone out here",
     favourites: favourites(
