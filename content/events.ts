@@ -30,8 +30,8 @@ export type ClubEvent = {
 
 export const events: ClubEvent[] = [
   {
-    // TODO: check the date, time and venue of the Halloween social.
-    date: "2026-10-29",
+    // TODO: add the time and venue of the Halloween social.
+    date: "2026-10-28",
     time: "[Time]",
     title: "Halloween Social",
     location: "[Venue]",

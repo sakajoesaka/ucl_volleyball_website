@@ -135,7 +135,7 @@ An icon only appears when its `url` is filled in. Set it back to `""` to hide it
 - [ ] Confirm the Men's 1st Team results in `content/achievements.ts` (1st and 2nd at the same 2025 BUCS Beach event).
 - [ ] Update `url` in `content/site.ts` once the site has its final web address (used for link previews and Google).
 - [ ] Replace the example events and placeholder photos.
-- [ ] Halloween: check the date in `content/events.ts`, and add the photos and a line about the night (`content/halloween.ts`).
+- [ ] Halloween: add the time and venue in `content/events.ts`, and add the photos and a line about the night (`content/halloween.ts`).
 - [ ] Movember (`content/movember.ts`): the real total and the club's team page link (`donateUrl`).
 - [ ] Fill in the placeholders: team descriptions and captains (`content/achievements.ts`) and team memberships (`content/memberships.ts`).
 
