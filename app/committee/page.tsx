@@ -1,4 +1,4 @@
-import { captains, committee, type CommitteeMember } from "@/content/committee";
+import { committeeGroups, type CommitteeMember } from "@/content/committee";
 import { pageMetadata } from "@/lib/metadata";
 import { CommitteeCards } from "@/components/CommitteeCards";
 import { Photo } from "@/components/Photo";
@@ -15,10 +15,16 @@ export default function CommitteePage() {
     <>
       <PageHeader backdrop="dots" title="Meet the Committee" intro="The students who run UCL Volleyball." />
       <Container className="py-16 md:py-24">
-        <h2 className="sr-only">Committee</h2>
-        <MemberCards members={committee} />
-        <Heading className="mt-16 mb-10 md:mt-24">Captains</Heading>
-        <MemberCards members={captains} />
+        {committeeGroups.map(({ heading, members }) => (
+          <section key={heading ?? "committee"} className="mt-16 first:mt-0 md:mt-24">
+            {heading ? (
+              <Heading className="mb-10">{heading}</Heading>
+            ) : (
+              <h2 className="sr-only">Committee</h2>
+            )}
+            <MemberCards members={members} />
+          </section>
+        ))}
       </Container>
     </>
   );

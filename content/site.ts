@@ -21,7 +21,7 @@ export const site = {
   // The main (non-team) membership, used across the site and the FAQs.
   membershipName: "Social Membership",
   membershipPrice: "£80",
-  memberCount: "200+",
+  memberCount: "280+",
   foundedYear: 1996,
   copyright: "© 2026 UCL Volleyball Society",
 };

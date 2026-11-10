@@ -40,8 +40,9 @@ const favourites = (meal: string, song: string, player: string, talent: string) 
 ];
 
 const hevo = "Higher Education Volleyball Officer";
+const socialSecretary = "Social Secretary";
 
-export const committee: CommitteeMember[] = [
+const committee: CommitteeMember[] = [
   {
     name: "Henry De Lima",
     role: "President",
@@ -144,7 +145,7 @@ export const committee: CommitteeMember[] = [
   },
   {
     name: "Cruz Yu",
-    role: "Social Secretary",
+    role: socialSecretary,
     course: "Applied Medical Sciences, 3rd year",
     position: "Outside Hitter",
     image: photo("cruz-yu", "Cruz Yu"),
@@ -161,7 +162,7 @@ export const committee: CommitteeMember[] = [
   },
   {
     name: "Jane Lee",
-    role: "Social Secretary",
+    role: socialSecretary,
     course: "Law, 2nd year",
     position: "Middle Blocker",
     image: photo("jane-lee", "Jane Lee"),
@@ -243,3 +244,11 @@ export const captains: CommitteeMember[] = teams.flatMap((team) =>
     extras: captainExtras[captain.name],
   })),
 );
+
+// The sections of the Committee page, in order. People are sorted into them by role.
+export const committeeGroups: { heading?: string; members: CommitteeMember[] }[] = [
+  { members: committee.filter((member) => member.role !== hevo && member.role !== socialSecretary) },
+  { heading: "HEVOs", members: committee.filter((member) => member.role === hevo) },
+  { heading: "Social Secretary", members: committee.filter((member) => member.role === socialSecretary) },
+  { heading: "Captains", members: captains },
+];

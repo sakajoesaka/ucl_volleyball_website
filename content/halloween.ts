@@ -11,12 +11,4 @@ export const halloween = {
 
   // The photo slideshow, in order. Add the files to public/images (see content/images.ts).
   photos: [images.halloweenCostumes, images.halloweenParty, images.halloweenWinners, images.halloweenNight],
-
-  // The costume "high scores" board. TODO: fill in the winners.
-  awards: [
-    { award: "Best Costume", winner: "[Name]", costume: "[Costume]" },
-    { award: "Scariest", winner: "[Name]", costume: "[Costume]" },
-    { award: "Funniest", winner: "[Name]", costume: "[Costume]" },
-    { award: "Best Group", winner: "[Names]", costume: "[Costume]" },
-  ],
 };

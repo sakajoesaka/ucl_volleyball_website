@@ -17,7 +17,7 @@ Built with Next.js, hosted on Vercel.
 | Social Membership sessions, socials & trips photos | `content/sessions.ts`                  |
 | FAQs                                               | `content/faqs.ts`                      |
 | Movember page (fundraising total, goal, links)     | `content/movember.ts`                  |
-| Halloween page (photos, costume winners)           | `content/halloween.ts`                 |
+| Halloween page (photos)                            | `content/halloween.ts`                 |
 
 **Placeholders:** any text in `[square brackets]` shows on the site as a dashed "placeholder" tag, e.g. `"Gruia [Surname]"`. Replace it with the real details and delete the brackets, e.g. `"Gruia Popescu"`.
 
@@ -61,7 +61,7 @@ Open `content/committee.ts` and copy an existing block:
 },
 ```
 
-Members show in the order they appear. To add someone's picture, save it as `public/images/committee/full-name.jpg`, matching the name given to `photo(...)`. Until then, the card shows a "Photo coming soon" box. Every card opens a pop-up with the same photo. To add more to it, give the person `extras`, as the existing members have. Captains come from each team in `content/achievements.ts`; their extras are in `captainExtras`.
+Members show in the order they appear, and anyone with a Higher Education Volleyball Officer or Social Secretary role goes under that heading automatically. To add someone's picture, save it as `public/images/committee/full-name.jpg`, matching the name given to `photo(...)`. Until then, the card shows a "Photo coming soon" box. Every card opens a pop-up with the same photo. To add more to it, give the person `extras`, as the existing members have. Captains come from each team in `content/achievements.ts`; their extras are in `captainExtras`.
 
 ## Add a game or result
 
@@ -103,7 +103,6 @@ Open `content/achievements.ts`. Each team has its achievements, an `about` descr
 Open `content/halloween.ts`:
 
 - **Photos:** the slideshow uses four photos. Save them in `public/images/` as `halloween-costumes.jpg`, `halloween-party.jpg`, `halloween-winners.jpg` and `halloween-night.jpg` (or change the names in `content/images.ts`). To add more, add entries in `content/images.ts` and list them in `photos`.
-- **Costume winners:** fill in the names and costumes in `awards`.
 - **Date, time and venue:** these come from the Halloween entry in `content/events.ts`.
 
 ## Update the Movember page
@@ -136,7 +135,7 @@ An icon only appears when its `url` is filled in. Set it back to `""` to hide it
 - [ ] Confirm the Men's 1st Team results in `content/achievements.ts` (1st and 2nd at the same 2025 BUCS Beach event).
 - [ ] Update `url` in `content/site.ts` once the site has its final web address (used for link previews and Google).
 - [ ] Replace the example events and placeholder photos.
-- [ ] Halloween: check the date in `content/events.ts`, and add the photos, the costume winners and a line about the night (`content/halloween.ts`).
+- [ ] Halloween: check the date in `content/events.ts`, and add the photos and a line about the night (`content/halloween.ts`).
 - [ ] Movember (`content/movember.ts`): the real total and the club's team page link (`donateUrl`).
 - [ ] Fill in the placeholders: team descriptions and captains (`content/achievements.ts`) and team memberships (`content/memberships.ts`).
 

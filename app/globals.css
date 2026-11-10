@@ -158,7 +158,7 @@ html.has-ball-cursor [contenteditable="true"] {
   }
 }
 
-/* Halloween: bats flap and fly across, pumpkins flicker, the "press start" text blinks. */
+/* Halloween: bats flap and fly across, pumpkins flicker. */
 @keyframes bat-flap {
   50% {
     scale: 1 0.55;
@@ -180,12 +180,6 @@ html.has-ball-cursor [contenteditable="true"] {
 @keyframes flicker {
   50% {
     opacity: 0.55;
-  }
-}
-
-@keyframes blink {
-  50% {
-    opacity: 0;
   }
 }
 

@@ -17,11 +17,9 @@ import { Container, Heading } from "@/components/ui";
 
 export const metadata = pageMetadata({
   title: "Halloween Social",
-  description: "Photos and costume winners from the UCL Volleyball Halloween social.",
+  description: "Photos from the UCL Volleyball Halloween social.",
   path: "/events/halloween",
 });
-
-const ranks = ["1st", "2nd", "3rd", "4th", "5th", "6th"];
 
 // The Halloween social, in the archive. Its own night-time look: purple-black, pumpkin
 // orange and bone white, with a pumpkin cursor (see VolleyballCursor).
@@ -66,8 +64,14 @@ export default function HalloweenPage() {
 
       <section className="bg-night-2 py-16 md:py-24">
         <Container>
-          <Heading>Photos From the Night</Heading>
-          <div className="mt-10 border-4 border-pumpkin shadow-[10px_10px_0_var(--color-candle)]">
+          <div className="flex items-end justify-between gap-6">
+            <Heading>Photos From the Night</Heading>
+            <PixelArt
+              sprite={ghost}
+              className="w-16 shrink-0 opacity-90 motion-safe:animate-[mo-bob_1.6s_steps(2)_infinite] md:w-24"
+            />
+          </div>
+          <div className="mt-8 border-4 border-pumpkin shadow-[10px_10px_0_var(--color-candle)]">
             <Carousel
               label="Halloween social photos"
               autoPlayMs={5000}
@@ -86,59 +90,6 @@ export default function HalloweenPage() {
               ))}
             />
           </div>
-        </Container>
-      </section>
-
-      <section className="py-16 md:py-24">
-        <Container className="grid items-center gap-12 lg:grid-cols-[1fr_auto]">
-          <div>
-            <Heading>Costume Hall of Fame</Heading>
-            <div className="mt-10 border-4 border-bone p-5 shadow-[10px_10px_0_var(--color-pumpkin)] sm:p-8">
-              <table
-                className={`${pixelFont.className} w-full text-left text-[0.65rem] leading-loose sm:text-xs md:text-sm`}
-              >
-                <caption className="pb-6 text-center text-base text-candle sm:text-xl">High Scores</caption>
-                <thead className="text-pumpkin">
-                  <tr>
-                    <th scope="col" className="pr-3 pb-3 font-normal">
-                      Rank
-                    </th>
-                    <th scope="col" className="pr-3 pb-3 font-normal">
-                      Award
-                    </th>
-                    <th scope="col" className="pb-3 font-normal">
-                      Winner
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {halloween.awards.map((row, i) => (
-                    <tr key={row.award} className="border-t-2 border-dashed border-bone/20 align-top">
-                      <td className="py-3 pr-3 text-candle">{ranks[i]}</td>
-                      <td className="py-3 pr-3">{row.award}</td>
-                      <td className="py-3 font-sans text-sm">
-                        <span className="block font-semibold">
-                          <WithPlaceholders text={row.winner} tone="light" />
-                        </span>
-                        <span className="mt-1 block text-bone/70">
-                          as <WithPlaceholders text={row.costume} tone="light" />
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <p
-                className={`${pixelFont.className} mt-6 text-center text-[0.65rem] text-pumpkin motion-safe:animate-[blink_1.2s_steps(1)_infinite] sm:text-xs`}
-              >
-                See you next Halloween
-              </p>
-            </div>
-          </div>
-          <PixelArt
-            sprite={ghost}
-            className="mx-auto w-28 opacity-90 motion-safe:animate-[mo-bob_1.6s_steps(2)_infinite] lg:w-44"
-          />
         </Container>
       </section>
 
