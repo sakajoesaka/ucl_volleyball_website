@@ -100,7 +100,7 @@ export default function OfferPage() {
 }
 
 function MembershipCard({ membership }: { membership: Membership }) {
-  const { name, price, period, description, includes, sessions, sessionsNote, joinUrl } = membership;
+  const { name, price, priceNote, period, description, includes, sessions, sessionsNote, joinUrl } = membership;
   const isPlaceholder = hasPlaceholder(price, description, ...includes);
 
   return (
@@ -125,6 +125,7 @@ function MembershipCard({ membership }: { membership: Membership }) {
           </span>
           <span className="text-white/75">{period}</span>
         </p>
+        {priceNote && <p className="mt-2 text-sm text-white/75">{priceNote}</p>}
         {isPlaceholder && (
           <p className="mt-4 text-sm text-white/70">Details in dashed boxes are placeholders, coming soon.</p>
         )}

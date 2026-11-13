@@ -45,7 +45,7 @@ Open `content/events.ts` and copy an existing block, from `{` to `},`. Paste it 
 - If several events have `featured: true`, the soonest one goes in the "Next Big Event" box.
 - To show a poster or photo on an event's card, save it in `public/images/` and add `image: { src: "/images/your-poster.jpg", alt: "Describe the poster", label: "" },`. Without one, the card shows a purple date graphic.
 - If there are no upcoming events, the page says "No upcoming events right now — check the WhatsApp group".
-- **Delete the three example events** (marked `example: true`) before the site goes live.
+- **Delete the two example events** (marked `example: true`) before the site goes live.
 
 ## Add a committee member
 

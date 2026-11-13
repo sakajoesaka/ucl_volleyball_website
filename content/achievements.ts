@@ -58,6 +58,7 @@ export const teams: Team[] = [
     summary: "Competes in BUCS Division 3 South and is the development pathway into the 1st team.",
     achievements: [{ text: "Just missed out on promotion in their first season" }],
     about: ["[Placeholder: a longer description of the team, its league, training and trials.]"],
+    instagram: "ucl_m2_vb",
     captains: [
       {
         name: "Maayan Biran",

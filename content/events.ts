@@ -53,15 +53,7 @@ export const events: ClubEvent[] = [
     },
   },
 
-  // ---- EXAMPLE EVENTS: delete these three and add real ones. ----
-  {
-    date: "2026-11-12",
-    time: "10:30pm until late",
-    title: "Karaoke Night",
-    location: "Venue shared in the WhatsApp group",
-    description: "Straight after Thursday's session. No singing talent required, just enthusiasm.",
-    example: true,
-  },
+  // ---- EXAMPLE EVENTS: delete these two and add real ones. ----
   {
     date: "2026-12-05",
     time: "10am–5pm",
