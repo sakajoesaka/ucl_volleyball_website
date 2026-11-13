@@ -45,7 +45,9 @@ export function CommitteeCards({ members, photos }: { members: CommitteeMember[]
                 {member.position && (
                   <div>
                     <dt className="text-sm text-muted">Position</dt>
-                    <dd className="text-ink">{member.position}</dd>
+                    <dd className="text-ink">
+                      <WithPlaceholders text={member.position} />
+                    </dd>
                   </div>
                 )}
               </dl>
@@ -91,7 +93,12 @@ function MemberPanel({
             </h2>
             <p className="mt-3 text-muted">
               <WithPlaceholders text={member.course} />
-              {member.position && ` · ${member.position}`}
+              {member.position && (
+                <>
+                  {" · "}
+                  <WithPlaceholders text={member.position} />
+                </>
+              )}
             </p>
           </div>
         </div>
@@ -105,7 +112,9 @@ function MemberPanel({
             {favourites.map(({ label, value }) => (
               <div key={label} className="rounded-2xl border border-line bg-white px-4 py-3">
                 <dt className="text-sm text-muted">{label}</dt>
-                <dd className="mt-0.5 font-semibold text-ink">{value}</dd>
+                <dd className="mt-0.5 font-semibold text-ink">
+                  <WithPlaceholders text={value} />
+                </dd>
               </div>
             ))}
           </dl>

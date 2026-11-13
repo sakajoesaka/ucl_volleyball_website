@@ -73,21 +73,30 @@ async function PastEvents() {
 function PastEventCard({ event }: { event: ClubEvent }) {
   const date = formatEventDate(event.date);
   return (
-    <article className="flex h-full flex-col rounded-[var(--radius-card)] border border-line bg-paper p-6">
-      <time dateTime={event.date} className="text-sm font-semibold text-muted">
-        {date.weekday} {date.day} {date.month} {date.year}
-      </time>
-      <Heading as="h3" size="md" className="mt-2 text-ink">
-        {event.title}
-      </Heading>
-      <p className="mt-3 text-muted">{event.description}</p>
-      {event.page && (
-        <div className="mt-auto pt-5">
-          <ButtonLink href={event.page} variant="outline" size="sm">
-            See More
-          </ButtonLink>
-        </div>
+    <article className="flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-line bg-paper">
+      {event.image && (
+        <Photo
+          image={event.image}
+          sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
+          className="aspect-[4/3]"
+        />
       )}
+      <div className="flex flex-1 flex-col p-6">
+        <time dateTime={event.date} className="text-sm font-semibold text-muted">
+          {date.weekday} {date.day} {date.month} {date.year}
+        </time>
+        <Heading as="h3" size="md" className="mt-2 text-ink">
+          {event.title}
+        </Heading>
+        <p className="mt-3 text-muted">{event.description}</p>
+        {event.page && (
+          <div className="mt-auto pt-5">
+            <ButtonLink href={event.page} variant="outline" size="sm">
+              See More
+            </ButtonLink>
+          </div>
+        )}
+      </div>
     </article>
   );
 }

@@ -39,6 +39,19 @@ export const events: ClubEvent[] = [
     page: "/events/halloween",
     look: "halloween",
   },
+  {
+    // TODO: add the venue.
+    date: "2026-11-04",
+    time: "8pm",
+    title: "Lobsters and Mobsters",
+    location: "[Venue]",
+    description: "Sports night with UCL Dance Society. Theme: Lobsters vs Mobsters.",
+    image: {
+      src: "/images/lobsters-and-mobsters.jpg",
+      alt: "Three club members in red lobster hats and claws at the Lobsters and Mobsters sports night",
+      label: "Lobsters and Mobsters",
+    },
+  },
 
   // ---- EXAMPLE EVENTS: delete these three and add real ones. ----
   {

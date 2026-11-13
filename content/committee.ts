@@ -188,6 +188,16 @@ const committee: CommitteeMember[] = [
       ),
     },
   },
+  {
+    name: "Stacey [Surname]",
+    role: "Event Coordinator",
+    course: "[Course], [Year]",
+    position: "[Position]",
+    image: photo("stacey", "Stacey"),
+    extras: {
+      favourites: favourites("[Pre-game meal]", "[Karaoke song]", "[Favourite player]", "[Useless talent]"),
+    },
+  },
 ];
 
 // What appears when a captain's card is clicked. Use the name exactly as it's written in achievements.ts.
