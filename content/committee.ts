@@ -212,6 +212,7 @@ const captainExtras: Record<string, MemberExtras> = {
     ),
   },
   "Joe Michael Sakamura Sissons": {
+    quote: "“Joe mama”",
     favourites: favourites(
       "Rice",
       "Titanium – Sia",

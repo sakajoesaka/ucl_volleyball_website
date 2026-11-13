@@ -112,7 +112,8 @@ export const teams: Team[] = [
     captains: [
       {
         name: "Joe Michael Sakamura Sissons",
-        course: "BSc Natural Science, 3rd year",
+        course: "Biomedical Science & Synthetic Organic Chemistry, 3rd year",
+        position: "Middle Blocker",
         email: "joe.sissons.24@ucl.ac.uk",
       },
       {
