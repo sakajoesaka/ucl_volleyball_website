@@ -117,7 +117,7 @@ export const teams: Team[] = [
       },
       {
         name: "Hei-Tou Wong",
-        course: "Geography with Economics, 1st year",
+        course: "Geography and Economics, 1st year",
         email: "hei-tou.wong.26@ucl.ac.uk",
       },
     ],

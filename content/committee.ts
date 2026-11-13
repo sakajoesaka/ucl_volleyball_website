@@ -202,6 +202,15 @@ const committee: CommitteeMember[] = [
 
 // What appears when a captain's card is clicked. Use the name exactly as it's written in achievements.ts.
 const captainExtras: Record<string, MemberExtras> = {
+  "Hei-Tou Wong": {
+    tagline: "Stop Tou-ching the net guys",
+    favourites: favourites(
+      "Tesco rainbow belts",
+      "Lush Life",
+      "Yuki Ishikawa",
+      "I can pop out my elbow joints and make them look broken (party trick)",
+    ),
+  },
   "Joe Michael Sakamura Sissons": {
     favourites: favourites(
       "Rice",
