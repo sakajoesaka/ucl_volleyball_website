@@ -189,13 +189,13 @@ const committee: CommitteeMember[] = [
     },
   },
   {
-    name: "Stacey [Surname]",
+    name: "Stacey Tan",
     role: "Event Coordinator",
-    course: "[Course], [Year]",
-    position: "[Position]",
-    image: photo("stacey", "Stacey"),
+    course: "Biomedical Sciences, 2nd year",
+    position: "Outside Hitter",
+    image: photo("stacey", "Stacey Tan"),
     extras: {
-      favourites: favourites("[Pre-game meal]", "[Karaoke song]", "[Favourite player]", "[Useless talent]"),
+      favourites: favourites("[Pre-game meal]", "[Karaoke song]", "Charlotte Cleaver", "[Useless talent]"),
     },
   },
 ];
